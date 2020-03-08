@@ -779,6 +779,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 					name: result[i].name, 
 					email: result[i].email,
 					title: result[i].title,
+					type: result[i].type,
 					content: result[i].content,
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
