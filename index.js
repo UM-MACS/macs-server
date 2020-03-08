@@ -46,7 +46,10 @@ function checkHashPassword(userPassword,salt){
 	return passwordData;
 }
 
-
+app.get('/', (req, res, nul) => {
+	res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ a: 1 }));
+})
 /* Register Activity */
 //register as patient
 app.post('/register/',(req,res,next)=>{
