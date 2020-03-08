@@ -20,6 +20,13 @@ var con = mysql.createConnection({
 	database: 'sql12326582'
 });
 
+con.connect(function(err) {
+	if (err){
+		console.log("DC!")
+	}
+	console.log("Connected!");
+  });
+
 console.log()
 var app = express();
 app.use(bodyParser.json({limit: '50mb',extended: true}));
@@ -770,6 +777,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 				jsonArray.push({
 					success: '1', 
 					name: result[i].name, 
+					email: result[i].email,
 					title: result[i].title,
 					content: result[i].content,
 					anonymous: result[i].anonymous,
