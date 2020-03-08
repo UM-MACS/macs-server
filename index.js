@@ -757,6 +757,8 @@ app.post('/emotion/',(req,res,next)=>{
 		,[email,type,date,expression,output],
 		function(err,result,fields){
 				if(err){
+					console.log('result' + result)
+					console.log('fields' + fields)
 					console.log('success: 0');
 					res.json([{success:'0'}]);
 					// throw err;	
