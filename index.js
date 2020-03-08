@@ -1510,7 +1510,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 
 
 //start server
-const port = 3000
+const port = process.env.PORT || 3000
 app.listen(port, ()=>{
 	console.log(`Restful running on port ${port}`);
 });
