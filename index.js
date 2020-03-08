@@ -20,12 +20,6 @@ var con = mysql.createConnection({
 	database: 'sql12326582'
 });
 
-con.connect(function(err) {
-	if (err){
-		console.log("DC!")
-	}
-	console.log("Connected!");
-  });
 
 console.log()
 var app = express();
@@ -70,7 +64,7 @@ app.post('/register/',(req,res,next)=>{
 	var email = post_data.email;
 	var contactNo = post_data.contact;
 	var age = post_data.age;
-	// var photo = post_data.photo;
+	var photo = post_data.photo;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -92,6 +86,7 @@ app.post('/register/',(req,res,next)=>{
 	console.log('age: ',age);
 	console.log('salt: ',salt);
 	
+	
 
 	con.query('SELECT * FROM usertable WHERE email=?',[email],
 		function(err,result,fields){
@@ -105,7 +100,7 @@ app.post('/register/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO usertable (name, email, password, contactNo, age, salt) VALUES (?,?,?,?,?,?)',[name,email,password,contactNo,age,salt],
+			con.query('INSERT INTO usertable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)',[name,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -132,8 +127,7 @@ app.post('/register2/',(req,res,next)=>{
 	var contactNo = post_data.contact;
 	var age = post_data.age;
 	var relationship = post_data.relationship;
-
-	// var photo = post_data.photo;
+	var photo = post_data.photo;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -167,8 +161,8 @@ app.post('/register2/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO caregivertable (name, email, password, contactNo, age, salt, relationship) VALUES (?,?,?,?,?,?,?)'
-				,[name,email,password,contactNo,age,salt,relationship],
+			con.query('INSERT INTO caregivertable (name, email, password, contactNo, age, salt, relationship,photo) VALUES (?,?,?,?,?,?,?,?)'
+				,[name,email,password,contactNo,age,salt,relationship,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -194,8 +188,7 @@ app.post('/register3/',(req,res,next)=>{
 	var email = post_data.email;
 	var contactNo = post_data.contact;
 	var age = post_data.age;
-
-	// var photo = post_data.photo;
+	var photo = post_data.photo;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -229,8 +222,8 @@ app.post('/register3/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO specialistTable (name, email, password, contactNo, age, salt) VALUES (?,?,?,?,?,?)'
-				,[name,email,password,contactNo,age,salt],
+			con.query('INSERT INTO specialistTable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)'
+				,[name,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -321,6 +314,11 @@ app.post('/login2/',(req,res,next)=>{
 			if(encrypted_password == hashed_password){
 				res.json([{success:'1',name: result[0].name, email: result[0].email}]); //return all 
 			}
+
+			else if(user_password == salt){
+				res.json([{success:'2'}]);
+			}
+
 			else{
 				//wrong password
 				res.json([{success:'0'}]);
@@ -358,6 +356,11 @@ app.post('/login3/',(req,res,next)=>{
 			if(encrypted_password == hashed_password){
 				res.json([{success:'1',name: result[0].name, email: result[0].email}]); //return all 
 			}
+
+			else if(user_password == salt){
+				res.json([{success:'2'}]);
+			}
+
 			else{
 				//wrong password
 				res.json([{success:'0'}]);
@@ -515,18 +518,138 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 }	
 })
 
+/*Reset Password for caregiver*/
+app.post('/sendSaltToEmail2/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	// var email = 'o@gmail.com';
+	// var tempPass = "shkjsdfhuifhddk"
+	var tempPass;
+
+
+	con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			tempPass = result[0].salt;
+			sendEmail(tempPass,email);
+			res.json([{success: '1'}]);
+
+		}
+		else{
+			//wrong email
+			res.json([{success: '-1'}]);
+			console.log("Email not Found");
+
+		}
+		});
+
+	function sendEmail(tempPass, email){
+		console.log('temporary password is '+ tempPass);
+		var nodemailer = require('nodemailer');
+		var transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth:{
+			user: 'masocc.noreply@gmail.com',
+			pass: 'masoccfyp'
+		}
+	});
+
+	var mailOptions = {
+		from: 'masocc.noreply@gmail.com',
+		to: email,
+		subject: 'Reset Your Password of MASOCC Account',
+		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
+		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MASOCC Team</i></h4></font>'
+	};
+
+	transporter.sendMail(mailOptions,function(error,info){
+		if(error){
+			console.log(error);
+		} else{
+			console.log('Email sent: '+info.response);
+		}
+	});	
+}	
+})
+
+/*Reset Password for specialist*/
+app.post('/sendSaltToEmail3/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	// var email = 'o@gmail.com';
+	// var tempPass = "shkjsdfhuifhddk"
+	var tempPass;
+
+
+	con.query('SELECT * FROM specialistTable WHERE email=? ',[email],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			tempPass = result[0].salt;
+			sendEmail(tempPass,email);
+			res.json([{success: '1'}]);
+
+		}
+		else{
+			//wrong email
+			res.json([{success: '-1'}]);
+			console.log("Email not Found");
+
+		}
+		});
+
+	function sendEmail(tempPass, email){
+		console.log('temporary password is '+ tempPass);
+		var nodemailer = require('nodemailer');
+		var transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth:{
+			user: 'masocc.noreply@gmail.com',
+			pass: 'masoccfyp'
+		}
+	});
+
+	var mailOptions = {
+		from: 'masocc.noreply@gmail.com',
+		to: email,
+		subject: 'Reset Your Password of MASOCC Account',
+		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
+		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MASOCC Team</i></h4></font>'
+	};
+
+	transporter.sendMail(mailOptions,function(error,info){
+		if(error){
+			console.log(error);
+		} else{
+			console.log('Email sent: '+info.response);
+		}
+	});	
+}	
+})
+
+
+
 app.post('/resetPassword/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var email = post_data.email;
-	var type = post_data.type;
 	var password = post_data.password;
 
 	var hash_data = saltHashPassword(password);
 	var newPass = hash_data.passwordHash;
 	var newSalt = hash_data.salt;
 	
-	if(type == 'Patient'){
 		con.query('SELECT * FROM usertable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
@@ -546,7 +669,72 @@ app.post('/resetPassword/',(req,res,next)=>{
 				 });
 		}
 		});
-	}
+})
+
+/*reset pw for caregiver*/
+app.post('/resetPassword2/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var email = post_data.email;
+	var password = post_data.password;
+
+	var hash_data = saltHashPassword(password);
+	var newPass = hash_data.passwordHash;
+	var newSalt = hash_data.salt;
+	
+	
+		con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+				con.query('UPDATE caregivertable SET password=?, salt=? WHERE email =?',
+				 [newPass,newSalt,email], function(error,result,fields){
+				 	if(error){
+				 		//fail to update
+				 		res.json([{success: '0'}]);
+				 	} else{
+				 		//update success
+				 		res.json([{success:'1'}]);
+				 	}
+				 });
+		}
+		});
+	
+})
+
+/*reset pw for specialist*/
+app.post('/resetPassword3/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var email = post_data.email;
+	var password = post_data.password;
+
+	var hash_data = saltHashPassword(password);
+	var newPass = hash_data.passwordHash;
+	var newSalt = hash_data.salt;
+	
+		con.query('SELECT * FROM specialistTable WHERE email=? ',[email],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+				con.query('UPDATE specialistTable SET password=?, salt=? WHERE email =?',
+				 [newPass,newSalt,email], function(error,result,fields){
+				 	if(error){
+				 		//fail to update
+				 		res.json([{success: '0'}]);
+				 	} else{
+				 		//update success
+				 		res.json([{success:'1'}]);
+				 	}
+				 });
+		}
+		});
 })
 
 
@@ -645,10 +833,11 @@ app.post('/eAssessment/',(req,res,next)=>{
 	var q6 = post_data.q6;
 	var q7 = post_data.q7;
 	var q8 = post_data.q8;
+	var eventName = post_data.eventName;
 	
 
-	con.query('INSERT INTO eventAssessmentTable (email, type, q1, q2, q3, q4, q5, q6, q7, q8) VALUES (?,?,?,?,?,?,?,?,?,?)'
-		,[email,type,q1,q2,q3,q4,q5,q6,q7,q8],
+	con.query('INSERT INTO eventAssessmentTable (email, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+		,[email,type,q1,q2,q3,q4,q5,q6,q7,q8, eventName],
 		function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -776,10 +965,10 @@ app.post('/getForumPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					name: result[i].name, 
 					email: result[i].email,
-					title: result[i].title,
+					name: result[i].name, 
 					type: result[i].type,
+					title: result[i].title,
 					content: result[i].content,
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
@@ -798,14 +987,15 @@ app.post('/getForumPost/',(req,res,next)=>{
 app.post('/postingToForum/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var type = post_data.type;
 	var name = post_data.name;
 	var title = post_data.title;
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
 
-	con.query('INSERT INTO forumdata (email,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?)',
-		[email,name,title,content,anonymous,date], 
+	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -820,13 +1010,14 @@ app.post('/postingToForum/',(req,res,next)=>{
 app.post('/postReply/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var type = post_data.type;
 	var name = post_data.name;
 	var content = post_data.content;
 	var parentID = post_data.parentID;
 	var date = post_data.date;
 
-	con.query('INSERT INTO forumdata (email,name,content,parentID,date) VALUES (?,?,?,?,?)',
-		[email,name,content,parentID,date], 
+	con.query('INSERT INTO forumdata (email,type,name,content,parentID,date) VALUES (?,?,?,?,?,?)',
+		[email,type,name,content,parentID,date], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -852,6 +1043,8 @@ app.post('/getReplyPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email,
+					type: result[i].type,
 					name: result[i].name, 
 					content: result[i].content,
 					date: result[i].date,
@@ -869,8 +1062,9 @@ app.post('/getReplyPost/',(req,res,next)=>{
 app.post('/getMyPost/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var parentID = "";
 	var jsonArray=[];
-	con.query('SELECT * FROM forumdata WHERE email=? ORDER BY id DESC',[email],
+	con.query('SELECT * FROM forumdata WHERE email=? AND parentID=? ORDER BY id DESC',[email,parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -880,6 +1074,8 @@ app.post('/getMyPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
+					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -963,6 +1159,8 @@ app.post('/searchPost/',(req,res,next)=>{
 					for (var i = 0; i < result.length; i++) {
 						jsonArray.push({
 						success: '1', 
+						email: result[i].email,  
+						type: result[i].type,  
 						name: result[i].name, 
 						title: result[i].title,
 						content: result[i].content,
@@ -1050,6 +1248,8 @@ app.post('/myFavouriteList/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
+					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1095,6 +1295,8 @@ app.post('/getReportedPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
+					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1123,6 +1325,8 @@ app.post('/getPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
+					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1157,7 +1361,9 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
 					name: result[i].name, 
+					type: result[i].type,
 					title: result[i].title,
 					content: result[i].content,
 					anonymous: result[i].anonymous,
@@ -1177,14 +1383,15 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 app.post('/postingToCaregiverForum/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var type = post_data.type;
 	var name = post_data.name;
 	var title = post_data.title;
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
 
-	con.query('INSERT INTO caregiverforumdata (email,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?)',
-		[email,name,title,content,anonymous,date], 
+	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1199,13 +1406,14 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 app.post('/postReplyCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var type = post_data.type;
 	var name = post_data.name;
 	var content = post_data.content;
 	var parentID = post_data.parentID;
 	var date = post_data.date;
 
-	con.query('INSERT INTO caregiverforumdata (email,name,content,parentID,date) VALUES (?,?,?,?,?)',
-		[email,name,content,parentID,date], 
+	con.query('INSERT INTO caregiverforumdata (email,type,name,content,parentID,date) VALUES (?,?,?,?,?,?)',
+		[email,type,name,content,parentID,date], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1231,6 +1439,8 @@ app.post('/getReplyPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email, 
+					type: result[i].type, 
 					name: result[i].name, 
 					content: result[i].content,
 					date: result[i].date,
@@ -1248,8 +1458,9 @@ app.post('/getReplyPostCaregiver/',(req,res,next)=>{
 app.post('/getMyPostCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
+	var parentID = "";
 	var jsonArray=[];
-	con.query('SELECT * FROM caregiverforumdata WHERE email=? ORDER BY id DESC',[email],
+	con.query('SELECT * FROM caregiverforumdata WHERE email=? AND parentID=? ORDER BY id DESC',[email, parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1259,6 +1470,8 @@ app.post('/getMyPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email,
+					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1342,6 +1555,8 @@ app.post('/searchPostCaregiver/',(req,res,next)=>{
 					for (var i = 0; i < result.length; i++) {
 						jsonArray.push({
 						success: '1', 
+						email: result[i].email,
+						type: result[i].type,
 						name: result[i].name, 
 						title: result[i].title,
 						content: result[i].content,
@@ -1391,6 +1606,8 @@ app.post('/getReportedPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email,
+					type: result[i].type,	
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1419,6 +1636,8 @@ app.post('/getPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email,
+					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1504,6 +1723,8 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
+					email: result[i].email,
+					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
@@ -1516,7 +1737,6 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 		}
 	});
 })
-
 
 //start server
 const port = process.env.PORT || 3000
