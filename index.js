@@ -210,7 +210,7 @@ app.post('/register3/',(req,res,next)=>{
 	console.log('salt: ',salt);
 	
 
-	con.query('SELECT * FROM specialistTable WHERE email=?',[email],
+	con.query('SELECT * FROM specialisttable WHERE email=?',[email],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('[MYSQL error]',err);
@@ -340,7 +340,7 @@ app.post('/login3/',(req,res,next)=>{
 	// var user_password = 'hello';
 	// var email = 'he@gmail.com';
 
-	con.query('SELECT * FROM specialistTable WHERE email=? ',[email],
+	con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -587,7 +587,7 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 	var tempPass;
 
 
-	con.query('SELECT * FROM specialistTable WHERE email=? ',[email],
+	con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -716,14 +716,14 @@ app.post('/resetPassword3/',(req,res,next)=>{
 	var newPass = hash_data.passwordHash;
 	var newSalt = hash_data.salt;
 	
-		con.query('SELECT * FROM specialistTable WHERE email=? ',[email],
+		con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
 				res.json('error',err);
 			});
 		if(result && result.length){
-				con.query('UPDATE specialistTable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE specialisttable SET password=?, salt=? WHERE email =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
@@ -753,7 +753,7 @@ app.post('/emotion/',(req,res,next)=>{
 	var output = post_data.output;
 	
 
-	con.query('INSERT INTO userEmotionData (email, type, date, expression,analysis) VALUES (?,?,?,?,?)'
+	con.query('INSERT INTO useremotiondata (email, type, date, expression,analysis) VALUES (?,?,?,?,?)'
 		,[email,type,date,expression,output],
 		function(err,result,fields){
 			console.log('debug ' + email)
@@ -782,7 +782,7 @@ app.post('/getEmotion/',(req,res,next)=>{
 	// var email = post_data.email;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM userEmotionData', 
+	con.query('SELECT * FROM useremotiondata', 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -810,7 +810,7 @@ app.post('/updateEmotion/',(req,res,next)=>{
 	// var id = '1';
 	// var analysis = 'Positive';
 
-	con.query('UPDATE userEmotionData SET analysis=? WHERE id=?',
+	con.query('UPDATE useremotiondata SET analysis=? WHERE id=?',
 		[analysis,id], 
 		function(error,result,fields){
 			if(error){
@@ -844,7 +844,7 @@ app.post('/eAssessment/',(req,res,next)=>{
 	var eventName = post_data.eventName;
 	
 
-	con.query('INSERT INTO eventAssessmentTable (email, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+	con.query('INSERT INTO eventassessmenttable (email, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
 		,[email,type,q1,q2,q3,q4,q5,q6,q7,q8, eventName],
 		function(err,result,fields){
 				if(err){
@@ -872,7 +872,7 @@ app.post('/getAppointment/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT * FROM patientAppointment WHERE email=?'
+	con.query('SELECT * FROM patientappointment WHERE email=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -905,7 +905,7 @@ app.post('/setAppointment/',(req,res,next)=>{
 	var date = post_data.date;
 	var time = post_data.time;
 
-	con.query('INSERT INTO patientAppointment (email, type, remark, appointmentDate, appointmentTime) VALUES (?,?,?,?,?)',
+	con.query('INSERT INTO patientappointment (email, type, remark, appointmentDate, appointmentTime) VALUES (?,?,?,?,?)',
 		[email,type,remark,date,time],
 		function(error,result,fields){
 			if(error){
@@ -922,7 +922,7 @@ app.post('/deleteAppointment/',(req,res,next)=>{
 
 	var id = post_data.id;
 
-	con.query('DELETE FROM patientAppointment WHERE id=?',
+	con.query('DELETE FROM patientappointment WHERE id=?',
 		[id], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -942,7 +942,7 @@ app.post('/updateAppointment/',(req,res,next)=>{
 	var date = post_data.date;
 	var time = post_data.time;
 
-	con.query('UPDATE patientAppointment SET remark=?, appointmentDate=?, appointmentTime=? WHERE id=?',
+	con.query('UPDATE patientappointment SET remark=?, appointmentDate=?, appointmentTime=? WHERE id=?',
 		[remark,date,time,id], 
 		function(error,result,fields){
 			if(error){
@@ -1192,7 +1192,7 @@ app.post('/addToFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('INSERT INTO favouriteList (email,postID) VALUES (?,?)',
+	con.query('INSERT INTO favouritelist (email,postID) VALUES (?,?)',
 		[email,postID], 
 		function(error,result,fields){
 			if(error){
@@ -1209,7 +1209,7 @@ app.post('/removeFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('DELETE FROM favouriteList WHERE email=? AND postID=?',
+	con.query('DELETE FROM favouritelist WHERE email=? AND postID=?',
 		[email,postID], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -1226,7 +1226,7 @@ app.post('/getIsFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID; 
 
-	con.query('SELECT * FROM favouriteList WHERE email=? AND postID=?',
+	con.query('SELECT * FROM favouritelist WHERE email=? AND postID=?',
 		[email,postID], function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1246,7 +1246,7 @@ app.post('/myFavouriteList/',(req,res,next)=>{
 	var email = post_data.email;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM forumdata WHERE id in (SELECT postID FROM favouriteList WHERE email=?) ORDER BY id DESC', [email],
+	con.query('SELECT * FROM forumdata WHERE id in (SELECT postID FROM favouritelist WHERE email=?) ORDER BY id DESC', [email],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1667,7 +1667,7 @@ app.post('/addToFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('INSERT INTO favouriteListCaregiver (email,postID) VALUES (?,?)',
+	con.query('INSERT INTO favouritelistcaregiver (email,postID) VALUES (?,?)',
 		[email,postID], 
 		function(error,result,fields){
 			if(error){
@@ -1684,7 +1684,7 @@ app.post('/removeFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('DELETE FROM favouriteListCaregiver WHERE email=? AND postID=?',
+	con.query('DELETE FROM favouritelistcaregiver WHERE email=? AND postID=?',
 		[email,postID], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -1701,7 +1701,7 @@ app.post('/getIsFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID; 
 
-	con.query('SELECT * FROM favouriteListCaregiver WHERE email=? AND postID=?',
+	con.query('SELECT * FROM favouritelistcaregiver WHERE email=? AND postID=?',
 		[email,postID], function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1721,7 +1721,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM caregiverforumdata WHERE id in (SELECT postID FROM favouriteListcaregiver WHERE email=?) ORDER BY id DESC', [email],
+	con.query('SELECT * FROM caregiverforumdata WHERE id in (SELECT postID FROM favouritelistcaregiver WHERE email=?) ORDER BY id DESC', [email],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
