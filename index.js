@@ -756,7 +756,13 @@ app.post('/emotion/',(req,res,next)=>{
 	con.query('INSERT INTO userEmotionData (email, type, date, expression,analysis) VALUES (?,?,?,?,?)'
 		,[email,type,date,expression,output],
 		function(err,result,fields){
+			console.log('debug ' + email)
+			console.log('debug ' + type)
+			console.log('debug ' + date)
+			console.log('debug ' + expression)
+			console.log('debug ' + output)
 				if(err){
+					console.log('err' + err)
 					console.log('result' + result)
 					console.log('fields' + fields)
 					console.log('success: 0');
