@@ -6,11 +6,18 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
 // connect to mysql
+// var con = mysql.createConnection({
+// 	host:'localhost',
+// 	user: 'root',
+// 	password: '',
+// 	database: 'masoccdata'
+// });
 var con = mysql.createConnection({
-	host:'localhost',
-	user: 'root',
-	password: '',
-	database: 'masoccdata'
+	host:'sql12.freesqldatabase.com',
+	port: '3306',
+	user: 'sql12326582',
+	password: '6HrzdV4lwa',
+	database: 'sql12326582'
 });
 
 console.log()
@@ -46,10 +53,7 @@ function checkHashPassword(userPassword,salt){
 	return passwordData;
 }
 
-app.get('/', (req, res, nul) => {
-	res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ a: 1 }));
-})
+
 /* Register Activity */
 //register as patient
 app.post('/register/',(req,res,next)=>{
@@ -1503,10 +1507,6 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 		}
 	});
 })
-
-
-
-
 
 
 //start server
