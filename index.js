@@ -1773,7 +1773,7 @@ app.post('/postExercise/',(req,res,next)=>{
 							res.json({success:'0'});
 						} else if(result){
 							console.log('mysql error',result);
-							res.json({success:'1',sessionId: result.RowDataPacket.id});
+							res.json({success:'1',sessionId: result[0].id});
 						}
 						else{
 							res.json({success:'0'});
