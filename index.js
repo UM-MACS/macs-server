@@ -1075,9 +1075,9 @@ app.post('/getMyPost/',(req,res,next)=>{
 	con.query('SELECT * FROM forumdata WHERE email=? AND parentID=? ORDER BY id DESC',[email,parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
-			console.log('mysql error',err);
-			res.json([{success:'0'}]);
-		});
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
 		if(result && result.length)	{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
@@ -1745,6 +1745,75 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 		}
 	});
 })
+
+//get exercise
+app.post('/getExercise/',(req,res,next)=>{
+	//TODO
+})
+
+//post exercise
+app.post('/postExercise/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	var exerciseLevel = post_data.exerciseLevel;
+	var startTime = post_data.startTime;
+	var endTime = post_data.endTime;
+	var feeling = post_data.feeling;
+
+	con.query('INSERT INTO exercisesessiontable (email,exerciseLevel,startTime,endTime,feeling) VALUES (?,?,?,?,?)' ,
+		[email,exerciseLevel,startTime,endTime,feeling], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			} else {
+				con.query('SELECT * FROM exercisesessiontable WHERE email=? AND startTime=?',
+					[email,startTime],
+					function(error,result,fields){
+						if(error){
+							res.json([{success:'0'}]);
+						} else if(result){
+							res.json([{success:'1'},{sessionId:result.id}]);
+						}
+						else{
+							res.json([{success:'0'}]);
+						}
+					}
+				);
+			}
+		}
+	);
+})
+
+//post exercise details
+app.post('/postExerciseDetails/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	var sessionId = post_data.sessionId;
+	var exerciseName = post_data.exerciseName;
+	var duration = post_data.duration;
+		
+		con.query('INSERT INTO exercisedetailtable (email,sessionId,exerciseName,duration) VALUES (?,?,?,?)',
+			[email,sessionId,exerciseName,duration], 
+			function(error,result,fields){
+				if(error){
+					res.json([{success:'0'}]);
+				}else{
+					res.json([{success:'1'}]);
+				}
+			}
+		)
+})
+
+//update exercise
+app.post('/updateExercise/',(req,res,next)=>{
+	//TODO
+})
+
+//delete exercise
+app.post('/deleteExercise/',(req,res,next)=>{
+	//TODO
+})
+
 
 //start server
 const port = process.env.PORT || 3000
