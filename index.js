@@ -975,7 +975,7 @@ app.post('/getPatientPic/',(req,res,next)=>{
 		if(result && result.length)	{
 			jsonArray.push({
 				success: '1', 
-				photo: result[i].photo});
+				photo: result[0].photo});
 			res.json(jsonArray);
 		} else{
 			res.json([{success:'-1'}]);
