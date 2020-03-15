@@ -1764,18 +1764,18 @@ app.post('/postExercise/',(req,res,next)=>{
 		[email,exerciseLevel,startTime,endTime,feeling], 
 		function(error,result,fields){
 			if(error){
-				res.json([{success:'0'}]);
+				res.json({success:'0'});
 			} else {
 				con.query('SELECT * FROM exercisesessiontable WHERE email=? AND startTime=?',
 					[email,startTime],
 					function(error,result,fields){
 						if(error){
-							res.json([{success:'0'}]);
+							res.json({success:'0'});
 						} else if(result){
-							res.json([{success:'1',sessionId:result.id}]);
+							res.json({success:'1',sessionId:result.id});
 						}
 						else{
-							res.json([{success:'0'}]);
+							res.json({success:'0'});
 						}
 					}
 				);
@@ -1796,9 +1796,9 @@ app.post('/postExerciseDetails/',(req,res,next)=>{
 			[email,sessionId,exerciseName,duration], 
 			function(error,result,fields){
 				if(error){
-					res.json([{success:'0'}]);
+					res.json({success:'0'});
 				}else{
-					res.json([{success:'1'}]);
+					res.json({success:'1'});
 				}
 			}
 		)
