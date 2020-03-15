@@ -1772,7 +1772,8 @@ app.post('/postExercise/',(req,res,next)=>{
 						if(error){
 							res.json({success:'0'});
 						} else if(result){
-							res.json({success:'1',sessionId:result.id});
+							console.log('mysql error',result);
+							res.json({success:'1',sessionId: result.id});
 						}
 						else{
 							res.json({success:'0'});
