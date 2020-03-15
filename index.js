@@ -1837,7 +1837,58 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 
 //get exercise
 app.post('/getExercise/',(req,res,next)=>{
-	//TODO
+	var post_data = req.body;
+	var email = post_data.email;
+	var jsonArray=[];
+	con.query('SELECT * FROM exercisesessiontable WHERE email=?', [email],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					email: result[i].email,
+					exerciseLevel: result[i].exerciseLevel,
+					startTime: result[i].startTime, 
+					endTime: result[i].endTime,
+					feeling: result[i].feeling,
+					id: result[i].id});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
+app.post('/getExerciseDetails/',(req,res,next)=>{
+	var post_data = req.body;
+	var sessionId = post_data.sessionId;
+	var jsonArray=[];
+	con.query('SELECT * FROM exercisedetailtable WHERE sessionId=?', [sessionId],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					email: result[i].email,
+					exerciseName: result[i].exerciseName,
+					duration: result[i].duration, 
+					sessionId: result[i].sessionId,
+					id: result[i].id});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
 })
 
 //post exercise
@@ -1901,7 +1952,26 @@ app.post('/updateExercise/',(req,res,next)=>{
 
 //delete exercise
 app.post('/deleteExercise/',(req,res,next)=>{
-	//TODO
+	var post_data = req.body;
+	var sessionId = post_data.sessionId;
+
+	con.query('DELETE FROM exercisesessiontable WHERE id=?',
+		[sessionId], function(err, result, fields){
+			if(err){
+				res.json([{success: '0'}]);
+			}
+			else{
+				con.query('DELETE FROM exercisesessiontable WHERE sessionId=?',
+					[sessionId], function(err, result, fields){
+					if(err){
+						res.json([{success: '0'}]);
+					}
+					else{
+						res.json([{success: '1'}]);
+					}
+				});
+			}
+		});
 })
 
 
