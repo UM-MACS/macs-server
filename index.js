@@ -1766,7 +1766,7 @@ app.post('/postExercise/',(req,res,next)=>{
 			if(error){
 				res.json({success:'0'});
 			} else {
-				con.query('SELECT * FROM exercisesessiontable WHERE email=? AND startTime=?',
+				con.query('SELECT * FROM exercisesessiontable WHERE email=? AND startTime=? LIMIT 1',
 					[email,startTime],
 					function(error,result,fields){
 						if(error){
