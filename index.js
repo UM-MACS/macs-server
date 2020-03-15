@@ -985,6 +985,64 @@ app.post('/getPatientPic/',(req,res,next)=>{
 	});
 })
 
+//get Caregiver photo
+app.post('/getCaregiverPic/',(req,res,next)=>{
+	var post_data = req.body; //get POST params
+
+	var email = post_data.email;
+	// var email ='l@gmail.com';
+	var jsonArray =[];
+	
+
+	con.query('SELECT * FROM caregivertable WHERE email=?'
+		,[email],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					photo: result[i].photo});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
+//get Specialist photo
+app.post('/getSpecialistPic/',(req,res,next)=>{
+	var post_data = req.body; //get POST params
+
+	var email = post_data.email;
+	// var email ='l@gmail.com';
+	var jsonArray =[];
+	
+
+	con.query('SELECT * FROM specialisttable WHERE email=?'
+		,[email],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					photo: result[i].photo});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
 
 
 
