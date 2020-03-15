@@ -955,6 +955,35 @@ app.post('/updateAppointment/',(req,res,next)=>{
 })
 
 
+/* Get User Photo*/
+//get Patient photo
+app.post('/getPatientPic/',(req,res,next)=>{
+	var post_data = req.body; //get POST params
+
+	var email = post_data.email;
+	// var email ='l@gmail.com';
+	var jsonArray =[];
+	
+
+	con.query('SELECT photo FROM usertable WHERE email=?'
+		,[email],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			jsonArray.push({
+				success: '1', 
+				photo: result[i].photo});
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
+
 
 
 /*Forum Activity*/
