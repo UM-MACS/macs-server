@@ -965,7 +965,7 @@ app.post('/getPatientPic/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT photo FROM usertable WHERE email=?'
+	con.query('SELECT * FROM usertable WHERE email=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -973,9 +973,11 @@ app.post('/getPatientPic/',(req,res,next)=>{
 			res.json([{success:'0'}]);
 		});
 		if(result && result.length)	{
-			jsonArray.push({
-				success: '1', 
-				photo: result[0].photo});
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					photo: result[i].photo});
+			}
 			res.json(jsonArray);
 		} else{
 			res.json([{success:'-1'}]);
