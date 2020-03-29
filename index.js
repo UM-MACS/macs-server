@@ -1864,6 +1864,7 @@ app.post('/getExercise/',(req,res,next)=>{
 	});
 })
 
+//get exercise detail
 app.post('/getExerciseDetails/',(req,res,next)=>{
 	var post_data = req.body;
 	var sessionId = post_data.sessionId;
@@ -1950,7 +1951,7 @@ app.post('/updateExercise/',(req,res,next)=>{
 	//TODO
 })
 
-//delete exercise
+//delete exercise 
 app.post('/deleteExercise/',(req,res,next)=>{
 	var post_data = req.body;
 	var sessionId = post_data.sessionId;
@@ -1961,7 +1962,7 @@ app.post('/deleteExercise/',(req,res,next)=>{
 				res.json([{success: '0'}]);
 			}
 			else{
-				con.query('DELETE FROM exercisesessiontable WHERE sessionId=?',
+				con.query('DELETE FROM exercisedetailtable WHERE sessionId=?',
 					[sessionId], function(err, result, fields){
 					if(err){
 						res.json([{success: '0'}]);
@@ -1970,6 +1971,94 @@ app.post('/deleteExercise/',(req,res,next)=>{
 						res.json([{success: '1'}]);
 					}
 				});
+			}
+		});
+})
+
+//post questionnaire
+// date, id, email, period, ques 1-8 
+app.post('/postQuestionnaire/',(req,res,next)=>{
+	var post_data = req.body; //get POST params
+
+	var email = post_data.email;
+	var date = post_data.date;
+	var period = post_data.period;
+	var q1 = post_data.q1;
+	var q2 = post_data.q2;
+	var q3 = post_data.q3;
+	var q4 = post_data.q4;
+	var q5 = post_data.q5;
+	var q6 = post_data.q6;
+	var q7 = post_data.q7;
+	var q8 = post_data.q8;
+
+	con.query('INSERT INTO QuestionnaireTable (email, date, period, q1, q2, q3, q4, q5, q6, q7, q8) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+		,[email,date,period,q1,q2,q3,q4,q5,q6,q7,q8],
+		function(err,result,fields){
+				if(err){
+					console.log('success: 0');
+					res.json([{success:'0'}]);
+					// throw err;	
+				}
+				else{
+					console.log('success');
+					res.json([{success:'1'}]);	
+				} 	
+	});
+})
+
+//get questionnaire 
+// date, id, email, period, ques 1-8 
+app.post('/getQuestionnaire/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	var jsonArray=[];
+	con.query('SELECT * FROM QuestionnaireTable WHERE email=?',
+		[email],
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					email: result[i].email,
+					date: result[i].date,
+					period: result[i].period, 
+					q1: result[i].q1,
+					q2: result[i].q2,
+					q3: result[i].q3,
+					q4: result[i].q4,
+					q5: result[i].q5,
+					q6: result[i].q6,
+					q7: result[i].q7,
+					q8: result[i].q8,
+					id: result[i].id});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
+
+
+//delete questionnaire
+app.post('/deleteQuestionnaire/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM QuestionnaireTable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json([{success: '0'}]);
+			}
+			else{
+				res.json([{success: '1'}]);
 			}
 		});
 })
