@@ -1437,6 +1437,48 @@ app.post('/getPost/',(req,res,next)=>{
 	});
 })
 
+//view favourite list
+app.post('/mySpecialistFavouriteList/',(req,res,next)=>{
+	var post_data = req.body;
+	var email = post_data.email;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM forumdata' + 
+		'FULL OUTER JOIN caregiverforumdata '+
+		'ON forumdata.email = caregiverforumdata.email, '+
+		'forumdata.type = caregiverforumdata.type, '+
+		'forumdata.name = caregiverforumdata.name, '+
+		'forumdata.title = caregiverforumdata.title, '+
+		'forumdata.content = caregiverforumdata.content, '+
+		'forumdata.date = caregiverforumdata.date, '+
+		'forumdata.id = caregiverforumdata.id '+
+		'WHERE forumdata.id in (SELECT postID FROM favouritelist WHERE email=?) '+
+		'AND caregiverforumdata.id in (SELECT postID FROM caregiverfavouritelist WHERE email=?)'+
+		'ORDER BY id DESC', [email] ,
+		function(err,result,fields){
+			con.on('error',function(err){
+			console.log('mysql error',err);
+			res.json([{success:'0'}]);
+		});
+		if(result && result.length)	{
+			for (var i = 0; i < result.length; i++) {
+				jsonArray.push({
+					success: '1', 
+					email: result[i].email, 
+					type: result[i].type, 
+					name: result[i].name, 
+					title: result[i].title,
+					content: result[i].content,
+					date: result[i].date,
+					id: result[i].id});
+			}
+			res.json(jsonArray);
+		} else{
+			res.json([{success:'-1'}]);
+		}
+	});
+})
+
 
 
 
