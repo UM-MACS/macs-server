@@ -96,7 +96,7 @@ app.post('/register/',(req,res,next)=>{
 		console.log('result ',result);
 		if(result && result.length)	{
 			console.log('User already exists');
-			res.json('User already exists');
+				res.json([{success:'-1'}]);	
 		}
 		else{
 			console.log('User new user');
@@ -157,7 +157,7 @@ app.post('/register2/',(req,res,next)=>{
 		console.log('result ',result);
 		if(result && result.length)	{
 			console.log('User already exists');
-			res.json('User already exists');
+				res.json([{success:'-1'}]);	
 		}
 		else{
 			console.log('User new user');
@@ -218,7 +218,7 @@ app.post('/register3/',(req,res,next)=>{
 		console.log('result ',result);
 		if(result && result.length)	{
 			console.log('User already exists');
-			res.json('User already exists');
+				res.json([{success:'-1'}]);	
 		}
 		else{
 			console.log('User new user');
