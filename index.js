@@ -227,6 +227,7 @@ app.post('/register3/',(req,res,next)=>{
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
+					console.log(err);
 					res.json([{success:'0'}]);
 					// throw err;	
 				}
