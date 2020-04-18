@@ -222,7 +222,7 @@ app.post('/register3/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO specialistTable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)'
+			con.query('INSERT INTO specialisttable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)'
 				,[name,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
