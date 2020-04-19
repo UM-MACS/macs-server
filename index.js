@@ -1982,17 +1982,10 @@ app.post('/postQuestionnaire/',(req,res,next)=>{
 	var email = post_data.email;
 	var date = post_data.date;
 	var period = post_data.period;
-	var q1 = post_data.q1;
-	var q2 = post_data.q2;
-	var q3 = post_data.q3;
-	var q4 = post_data.q4;
-	var q5 = post_data.q5;
-	var q6 = post_data.q6;
-	var q7 = post_data.q7;
-	var q8 = post_data.q8;
+	var answer = post_data.answer;
 
-	con.query('INSERT INTO QuestionnaireTable (email, date, period, q1, q2, q3, q4, q5, q6, q7, q8) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
-		,[email,date,period,q1,q2,q3,q4,q5,q6,q7,q8],
+	con.query('INSERT INTO questionnairetable (email, date, period, answer) VALUES (?,?,?,?)'
+		,[email,date,period,answer],
 		function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -2012,7 +2005,7 @@ app.post('/getQuestionnaire/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
 	var jsonArray=[];
-	con.query('SELECT * FROM QuestionnaireTable WHERE email=?',
+	con.query('SELECT * FROM questionnairetable WHERE email=?',
 		[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -2026,14 +2019,7 @@ app.post('/getQuestionnaire/',(req,res,next)=>{
 					email: result[i].email,
 					date: result[i].date,
 					period: result[i].period, 
-					q1: result[i].q1,
-					q2: result[i].q2,
-					q3: result[i].q3,
-					q4: result[i].q4,
-					q5: result[i].q5,
-					q6: result[i].q6,
-					q7: result[i].q7,
-					q8: result[i].q8,
+					answer: result[i].answer,
 					id: result[i].id});
 			}
 			res.json(jsonArray);
@@ -2042,8 +2028,6 @@ app.post('/getQuestionnaire/',(req,res,next)=>{
 		}
 	});
 })
-
-
 
 //delete questionnaire
 app.post('/deleteQuestionnaire/',(req,res,next)=>{
@@ -2062,6 +2046,59 @@ app.post('/deleteQuestionnaire/',(req,res,next)=>{
 		});
 })
 
+//add chat channel id
+app.post('/postChatChannel/',(req,res,next)=>{
+	let post_data = req.body;
+
+	let emailFrom = post_data.emailFrom;
+	let emailTo = post_data.emailTo;
+	let chatChannelId = post_data.chatChannelId;
+	let receiverName = post_data.receiverName;
+	let receiverType = post_data.receiverType;
+
+	con.query('INSERT INTO ChatChannelTable (emailFrom, emailTo, chatChannelId, receiverName, receiverType) VALUES (?,?,?,?,?)',
+		[emailFrom, emailTo, chatChannelId, receiverName, receiverType],
+		function(err,result,fields){
+			if(err){
+				console.log('success: 0');
+				res.json([{success:'0'}]);
+			}
+			else{
+				console.log('success');
+				res.json([{success:'1'}]);	
+			} 	
+		})
+})
+
+app.post('/getChatChannel/',(req,res,next)=>{
+	let post_data = req.body;
+	let emailFrom = post_data.emailFrom;
+
+	con.query('SELECT * FROM ChatChannelTable WHERE emailFrom=?',
+		[emailFrom],
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						emailFrom: result[i].emailFrom,
+						emailTo: result[i].emailTo,
+						chatChannelId: result[i].chatChannelId,
+						receiverName: result[i].receiverName,
+						receiverType = result[i].receiverType
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
 
 //start server
 const port = process.env.PORT || 3000
