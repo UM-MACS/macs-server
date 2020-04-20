@@ -1107,10 +1107,13 @@ app.post('/getForumPost/',(req,res,next)=>{
 	var parentID = '';
 	con.query('SELECT forum.* ,'+
 		'user.photo , '+
+		'FROM forumdata forum '+
+		'LEFT JOIN usertable user ON user.email = forum.email '+
+		'UNION ALL '+
+		'SELECT forum.* ,'+
 		'specialist.photo '+
 		'FROM forumdata forum '+
-		'JOIN usertable user ON user.email = forum.email '+
-		'JOIN specialisttable specialist ON specialist.email = forum.email '+	
+		'LEFT JOIN specialisttable specialist ON specialist.email = forum.email '+	
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
