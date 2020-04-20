@@ -778,6 +778,7 @@ app.post('/emotion/',(req,res,next)=>{
 					console.log('result' + result)
 					console.log('fields' + fields)
 					console.log('success: 0');
+					console.trace('fatal error: ' + err.message)
 					res.json([{success:'0'}]);
 					// throw err;	
 				}
