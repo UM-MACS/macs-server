@@ -1106,7 +1106,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID = '';
 	con.query('SELECT forum.* ,'+
-		'user.photo , '+
+		'user.photo '+
 		'FROM forumdata forum '+
 		'LEFT JOIN usertable user ON user.email = forum.email '+
 		'UNION ALL '+
