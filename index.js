@@ -2101,7 +2101,7 @@ app.post('/getChatChannel/',(req,res,next)=>{
 						emailTo: result[i].emailTo,
 						chatChannelId: result[i].chatChannelId,
 						receiverName: result[i].receiverName,
-						receiverType = result[i].receiverType
+						receiverType: result[i].receiverType
 					});
 				}
 				res.json(jsonArray);
