@@ -14,13 +14,13 @@ var bodyParser = require('body-parser');
 // });
 
 //freesqldatabase old
-var con = mysql.createConnection({
-	host:'sql12.freesqldatabase.com',
-	port: '3306',
-	user: 'sql12326582',
-	password: '6HrzdV4lwa',
-	database: 'sql12326582'
-});
+// var con = mysql.createConnection({
+// 	host:'sql12.freesqldatabase.com',
+// 	port: '3306',
+// 	user: 'sql12326582',
+// 	password: '6HrzdV4lwa',
+// 	database: 'sql12326582'
+// });
 
 //awardspace.net new
 // var con = mysql.createConnection({
@@ -31,8 +31,17 @@ var con = mysql.createConnection({
 // 	database: '3404855_masc'
 // });
 
+//db4free new
+var con = mysql.createConnection({
+	host: 'db4free.net',
+	port: '3306',
+	user: 'masc_user',
+	password: 'masc1234',
+	database: 'masc_db'
+});
 
-console.log(con)
+
+console.log()
 var app = express();
 app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
