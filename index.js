@@ -24,7 +24,7 @@ var bodyParser = require('body-parser');
 
 //awardspace.net new
 var con = mysql.createConnection({
-	host:'fdb25.awardspace.net',
+	host: 'fdb25.awardspace.net',
 	port: '3306',
 	user: '3404855_masc',
 	password: 'WUQ(vQC41dmPYtp7',
@@ -32,7 +32,7 @@ var con = mysql.createConnection({
 });
 
 
-console.log()
+console.log(con)
 var app = express();
 app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
