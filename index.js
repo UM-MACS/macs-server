@@ -12,12 +12,23 @@ var bodyParser = require('body-parser');
 // 	password: '',
 // 	database: 'masoccdata'
 // });
+
+//freesqldatabase old
+// var con = mysql.createConnection({
+// 	host:'sql12.freesqldatabase.com',
+// 	port: '3306',
+// 	user: 'sql12326582',
+// 	password: '6HrzdV4lwa',
+// 	database: 'sql12326582'
+// });
+
+//awardspace.net new
 var con = mysql.createConnection({
-	host:'sql12.freesqldatabase.com',
+	host:'fdb25.awardspace.net',
 	port: '3306',
-	user: 'sql12326582',
-	password: '6HrzdV4lwa',
-	database: 'sql12326582'
+	user: '3404855_masc',
+	password: 'WUQ(vQC41dmPYtp7',
+	database: '3404855_masc'
 });
 
 
@@ -2035,7 +2046,7 @@ app.post('/deleteQuestionnaire/',(req,res,next)=>{
 
 	var id = post_data.id;
 
-	con.query('DELETE FROM QuestionnaireTable WHERE id=?',
+	con.query('DELETE FROM questionnairetable WHERE id=?',
 		[id], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -2056,7 +2067,7 @@ app.post('/postChatChannel/',(req,res,next)=>{
 	let receiverName = post_data.receiverName;
 	let receiverType = post_data.receiverType;
 
-	con.query('INSERT INTO ChatChannelTable (emailFrom, emailTo, chatChannelId, receiverName, receiverType) VALUES (?,?,?,?,?)',
+	con.query('INSERT INTO chatchanneltable (emailFrom, emailTo, chatChannelId, receiverName, receiverType) VALUES (?,?,?,?,?)',
 		[emailFrom, emailTo, chatChannelId, receiverName, receiverType],
 		function(err,result,fields){
 			if(err){
@@ -2074,7 +2085,7 @@ app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
 	let emailFrom = post_data.emailFrom;
 
-	con.query('SELECT * FROM ChatChannelTable WHERE emailFrom=?',
+	con.query('SELECT * FROM chatchanneltable WHERE emailFrom=?',
 		[emailFrom],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -2085,6 +2096,7 @@ app.post('/getChatChannel/',(req,res,next)=>{
 				for (var i = 0; i < result.length; i++) {
 					jsonArray.push({
 						success: '1', 
+						id: result[i].id,
 						emailFrom: result[i].emailFrom,
 						emailTo: result[i].emailTo,
 						chatChannelId: result[i].chatChannelId,
