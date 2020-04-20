@@ -1117,7 +1117,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 		// 'LEFT JOIN specialisttable specialist ON specialist.email = forum.email '+	
 		'LEFT JOIN usertable user USING(email) '+
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
-		[parentID, parentID],
+		[parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
