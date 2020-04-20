@@ -1109,7 +1109,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 		'user.photo '+
 		'FROM forumdata forum '+
 		'LEFT JOIN usertable user ON user.email = forum.email '+
-		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30 '+
+		'WHERE forum.parentID=? '+
 		'UNION ALL '+
 		'SELECT forum.* ,'+
 		'specialist.photo '+
