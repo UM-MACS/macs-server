@@ -1070,10 +1070,47 @@ app.post('/getSpecialistPic/',(req,res,next)=>{
 
 /*Forum Activity*/
 //get forum posts
+// app.post('/getForumPost/',(req,res,next)=>{
+// 	var jsonArray=[];
+// 	var parentID = '';
+// 	con.query('SELECT * FROM forumdata WHERE parentID=? ORDER BY id DESC LIMIT 30',
+// 		[parentID],
+// 		function(err,result,fields){
+// 			con.on('error',function(err){
+// 			console.log('mysql error',err);
+// 			res.json([{success:'0'}]);
+// 		});
+// 		if(result && result.length)	{
+// 			for (var i = 0; i < result.length; i++) {
+// 				jsonArray.push({
+// 					success: '1', 
+// 					email: result[i].email,
+// 					name: result[i].name, 
+// 					type: result[i].type,
+// 					title: result[i].title,
+// 					content: result[i].content,
+// 					anonymous: result[i].anonymous,
+// 					pinned: result[i].pinned,
+// 					date: result[i].date,
+// 					id: result[i].id});
+
+// 			}
+// 			res.json(jsonArray);
+// 		} else{
+// 			res.json([{success:'-1'}]);
+// 		}
+// 	});
+// })
+
 app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID = '';
-	con.query('SELECT * FROM forumdata WHERE parentID=? ORDER BY id DESC LIMIT 30',
+	con.query('SELECT forum.* ,'+
+		'user.photo, '+
+		'specialist.photo, '+
+		'FROM forumdata forum '+
+		'LEFT JOIN usertable user USING(email) '+
+		' WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1092,10 +1129,12 @@ app.post('/getForumPost/',(req,res,next)=>{
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
 					date: result[i].date,
+					photo: result[i].photo,
 					id: result[i].id});
 
 			}
 			res.json(jsonArray);
+			console.log(jsonArray);
 		} else{
 			res.json([{success:'-1'}]);
 		}
