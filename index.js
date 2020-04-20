@@ -1106,16 +1106,11 @@ app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID = '';
 	con.query('SELECT forum.* ,'+
-		'user.photo '+
+		'user.photo , '+
+		// 'specialist.photo '+
 		'FROM forumdata forum '+
-		// 'LEFT JOIN usertable user ON user.email = forum.email '+
 		'LEFT JOIN usertable user USING(email) '+
-		'UNION ALL '+
-		'SELECT forum.* ,'+
-		'specialist.photo '+
-		'FROM forumdata forum '+
-		// 'LEFT JOIN specialisttable specialist ON specialist.email = forum.email '+	
-		'LEFT JOIN specialisttable specialist USING(email) '+
+		// 'LEFT JOIN specialisttable specialist USING(email) '+	
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
