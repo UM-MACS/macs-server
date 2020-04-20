@@ -14,22 +14,22 @@ var bodyParser = require('body-parser');
 // });
 
 //freesqldatabase old
-// var con = mysql.createConnection({
-// 	host:'sql12.freesqldatabase.com',
-// 	port: '3306',
-// 	user: 'sql12326582',
-// 	password: '6HrzdV4lwa',
-// 	database: 'sql12326582'
-// });
+var con = mysql.createConnection({
+	host:'sql12.freesqldatabase.com',
+	port: '3306',
+	user: 'sql12326582',
+	password: '6HrzdV4lwa',
+	database: 'sql12326582'
+});
 
 //awardspace.net new
-var con = mysql.createConnection({
-	host: 'fdb25.awardspace.net',
-	port: '3306',
-	user: '3404855_masc',
-	password: 'WUQ(vQC41dmPYtp7',
-	database: '3404855_masc'
-});
+// var con = mysql.createConnection({
+// 	host: 'fdb25.awardspace.net',
+// 	port: '3306',
+// 	user: '3404855_masc',
+// 	password: 'WUQ(vQC41dmPYtp7',
+// 	database: '3404855_masc'
+// });
 
 
 console.log(con)
