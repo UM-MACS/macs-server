@@ -1136,6 +1136,8 @@ app.post('/getForumPost/',(req,res,next)=>{
 			res.json(jsonArray);
 			console.log(jsonArray);
 		} else{
+			console.log(err);
+			console.log('fail');
 			res.json([{success:'-1'}]);
 		}
 	});
