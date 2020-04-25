@@ -1156,9 +1156,9 @@ app.post('/postingToForum/',(req,res,next)=>{
 		[email,type,name,title,content,anonymous,date], 
 		function(error,result,fields){
 			if(error){
+				console.log(error);
 				res.json([{success:'0'}]);
 			} else{
-				console.log(error);
 				res.json([{success:'1'}]);
 			}
 		})
