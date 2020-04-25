@@ -1514,7 +1514,11 @@ app.post('/getPost/',(req,res,next)=>{
 app.post('/getCaregiverForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID = '';
-	con.query('SELECT * FROM caregiverforumdata WHERE parentID=? ORDER BY id DESC LIMIT 30',
+	con.query(con.query('SELECT forum.* ,'+
+		'user.photo '+
+		'FROM caregiverforumdata forum '+
+		'LEFT JOIN caregivertable user USING(email) '+
+		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1533,6 +1537,7 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
 					date: result[i].date,
+					photo: result[i].photo,
 					id: result[i].id});
 
 			}
