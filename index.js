@@ -1158,6 +1158,7 @@ app.post('/postingToForum/',(req,res,next)=>{
 			if(error){
 				res.json([{success:'0'}]);
 			} else{
+				console.log(error);
 				res.json([{success:'1'}]);
 			}
 		})
