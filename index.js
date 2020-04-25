@@ -1514,7 +1514,7 @@ app.post('/getPost/',(req,res,next)=>{
 app.post('/getCaregiverForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID = '';
-	con.query(con.query('SELECT forum.* ,'+
+	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM caregiverforumdata forum '+
 		'LEFT JOIN caregivertable user USING(email) '+
