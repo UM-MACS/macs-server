@@ -1104,12 +1104,12 @@ app.post('/getSpecialistPic/',(req,res,next)=>{
 
 app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
-	var parentID = '';
+
 	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM forumdata forum '+
 		'LEFT JOIN usertable user USING(email) '+
-		'WHERE forum.parentID IS NULL ORDER BY id DESC LIMIT 30',
+		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1151,9 +1151,12 @@ app.post('/postingToForum/',(req,res,next)=>{
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
+	var parentID = '';
+	var pinned = '';
+	var reported = '';
 
-	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date], 
+	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date,parentID,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
 		function(error,result,fields){
 			if(error){
 				console.log(error);
@@ -1174,9 +1177,13 @@ app.post('/postReply/',(req,res,next)=>{
 	var content = post_data.content;
 	var parentID = post_data.parentID;
 	var date = post_data.date;
+	var title = '';
+	var anonymous = '';
+	var pinned = '';
+	var reported = '';
 
-	con.query('INSERT INTO forumdata (email,type,name,content,parentID,date) VALUES (?,?,?,?,?,?)',
-		[email,type,name,content,parentID,date], 
+	con.query('INSERT INTO forumdata (email,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1545,9 +1552,12 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
+	var parentID = '';
+	var pinned = '';
+	var reported = '';
 
-	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date], 
+	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date, parentID, pinned, reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1567,9 +1577,13 @@ app.post('/postReplyCaregiver/',(req,res,next)=>{
 	var content = post_data.content;
 	var parentID = post_data.parentID;
 	var date = post_data.date;
+	var title = '';
+	var anonymous = '';
+	var pinned = '';
+	var reported = '';
 
-	con.query('INSERT INTO caregiverforumdata (email,type,name,content,parentID,date) VALUES (?,?,?,?,?,?)',
-		[email,type,name,content,parentID,date], 
+	con.query('INSERT INTO caregiverforumdata (email,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
