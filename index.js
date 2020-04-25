@@ -1104,7 +1104,7 @@ app.post('/getSpecialistPic/',(req,res,next)=>{
 
 app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
-	var parentID = 'NULL';
+	var parentID = '';
 	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM forumdata forum '+
