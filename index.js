@@ -2122,6 +2122,87 @@ app.post('/getChatChannel/',(req,res,next)=>{
 	);
 })
 
+app.post('/getAllPatient/',(req,res,next)=>{
+	let post_data = req.body;
+
+	con.query('SELECT * FROM usertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id,
+						name: result[i].name,
+						email: result[i].email
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+app.post('/getAllCaregiver/',(req,res,next)=>{
+	let post_data = req.body;
+
+	con.query('SELECT * FROM caregivertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id,
+						name: result[i].name,
+						email: result[i].email
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+app.post('/getAllSpecialist/',(req,res,next)=>{
+	let post_data = req.body;
+
+	con.query('SELECT * FROM specialisttable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id,
+						name: result[i].name,
+						email: result[i].email
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
 //start server
 const port = process.env.PORT || 3000
 app.listen(port, ()=>{
