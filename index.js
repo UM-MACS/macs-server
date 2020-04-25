@@ -1109,7 +1109,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 		'user.photo '+
 		'FROM forumdata forum '+
 		'LEFT JOIN usertable user USING(email) '+
-		'WHERE forum.parentID=? OR forum.parentID IS NULL ORDER BY id DESC',
+		'WHERE forum.parentID IS NULL ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
