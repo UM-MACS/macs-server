@@ -1151,9 +1151,10 @@ app.post('/postingToForum/',(req,res,next)=>{
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
+	var parentID = '';
 
-	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date], 
+	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date, parentID) VALUES (?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,parentID], 
 		function(error,result,fields){
 			if(error){
 				console.log(error);
@@ -1179,6 +1180,7 @@ app.post('/postReply/',(req,res,next)=>{
 		[email,type,name,content,parentID,date], 
 		function(error,result,fields){
 			if(error){
+				console.log(error);
 				res.json([{success:'0'}]);
 			} else{
 				res.json([{success:'1'}]);
@@ -1545,9 +1547,10 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
+	var parentID = '';
 
-	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date) VALUES (?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date], 
+	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date,parentID) VALUES (?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,parentID], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
