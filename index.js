@@ -295,6 +295,7 @@ app.post('/login/',(req,res,next)=>{
 
 			if(encrypted_password == hashed_password){
 				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
+				console.log('nric is '+result[0].nric);
 			}
 
 			else if(user_password == salt){
