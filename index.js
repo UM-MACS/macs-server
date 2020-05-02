@@ -299,16 +299,19 @@ app.post('/login/',(req,res,next)=>{
 
 			else if(user_password == salt){
 				res.json([{success:'2'}]);
+				console.log(error);
 			}
 
 			else{
 				//wrong password
 				res.json([{success:'0'}]);
+				console.log(error);
 			}
 		}
 		else{
 			//wrong email
 			res.json([{success: '-1'}]);
+			console.log(error);
 		}
 		});
 })
