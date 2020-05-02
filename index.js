@@ -417,7 +417,7 @@ app.post('/changepassword/',(req,res,next)=>{
 	var newSalt = hash_data.salt;
 	
 	if(type == 'Patient'){
-		con.query('SELECT * FROM usertable WHERE email=? ',[email],
+		con.query('SELECT * FROM usertable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -433,7 +433,7 @@ app.post('/changepassword/',(req,res,next)=>{
 
 			if(encrypted_password == hashed_password){
 				//if success 
-				con.query('UPDATE usertable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE usertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
@@ -450,8 +450,8 @@ app.post('/changepassword/',(req,res,next)=>{
 			}
 		}
 		});
-	} else{ //if type is caregiver
-		con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
+	} else if (type == 'Caregiver'){ //if type is caregiver
+		con.query('SELECT * FROM caregivertable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -466,7 +466,7 @@ app.post('/changepassword/',(req,res,next)=>{
 
 			if(encrypted_password == hashed_password){
 				//if success 
-				con.query('UPDATE caregivertable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE caregivertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
@@ -483,6 +483,40 @@ app.post('/changepassword/',(req,res,next)=>{
 			}
 		}
 		});
+	} else{
+		con.query('SELECT * FROM specialisttable WHERE nric=? ',[email],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			var salt = result[0].salt; //get salt 
+			console.log('salt',salt);
+			var encrypted_password = result[0].password;
+			console.log('password: ',encrypted_password);
+			var hashed_password = checkHashPassword(password,salt).passwordHash;
+
+			if(encrypted_password == hashed_password){
+				//if success 
+				con.query('UPDATE specialisttable SET password=?, salt=? WHERE nric =?',
+				 [newPass,newSalt,email], function(error,result,fields){
+				 	if(error){
+				 		//fail to update
+				 		res.json([{success: '0'}]);
+				 	} else{
+				 		//update success
+				 		res.json([{success:'1'}]);
+				 	}
+				 });
+			}
+			else{
+				//wrong password
+				res.json([{success:'-1'}]);
+			}
+		}
+		});
+
 	}
 })
 
