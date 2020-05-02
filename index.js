@@ -4,7 +4,7 @@ var uuid = require('uuid');
 var express = require('express');
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
-
+	
 // connect to mysql
 // var con = mysql.createConnection({
 // 	host:'localhost',
@@ -781,7 +781,7 @@ app.post('/emotion/',(req,res,next)=>{
 	var output = post_data.output;
 	
 
-	con.query('INSERT INTO useremotiondata (email, type, date, expression,analysis) VALUES (?,?,?,?,?)'
+	con.query('INSERT INTO useremotiondata (nric, type, date, expression,analysis) VALUES (?,?,?,?,?)'
 		,[email,type,date,expression,output],
 		function(err,result,fields){
 			console.log('debug ' + email)
@@ -873,7 +873,7 @@ app.post('/eAssessment/',(req,res,next)=>{
 	var eventName = post_data.eventName;
 	
 
-	con.query('INSERT INTO eventassessmenttable (email, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+	con.query('INSERT INTO eventassessmenttable (nric, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
 		,[email,type,q1,q2,q3,q4,q5,q6,q7,q8, eventName],
 		function(err,result,fields){
 				if(err){
@@ -901,7 +901,7 @@ app.post('/getAppointment/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT * FROM patientappointment WHERE email=?'
+	con.query('SELECT * FROM patientappointment WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -934,7 +934,7 @@ app.post('/setAppointment/',(req,res,next)=>{
 	var date = post_data.date;
 	var time = post_data.time;
 
-	con.query('INSERT INTO patientappointment (email, type, remark, appointmentDate, appointmentTime) VALUES (?,?,?,?,?)',
+	con.query('INSERT INTO patientappointment (nric, type, remark, appointmentDate, appointmentTime) VALUES (?,?,?,?,?)',
 		[email,type,remark,date,time],
 		function(error,result,fields){
 			if(error){
@@ -994,7 +994,7 @@ app.post('/getPatientPic/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT * FROM usertable WHERE email=?'
+	con.query('SELECT * FROM usertable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1023,7 +1023,7 @@ app.post('/getCaregiverPic/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT * FROM caregivertable WHERE email=?'
+	con.query('SELECT * FROM caregivertable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1052,7 +1052,7 @@ app.post('/getSpecialistPic/',(req,res,next)=>{
 	var jsonArray =[];
 	
 
-	con.query('SELECT * FROM specialisttable WHERE email=?'
+	con.query('SELECT * FROM specialisttable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -1116,7 +1116,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM forumdata forum '+
-		'LEFT JOIN usertable user USING(email) '+
+		'LEFT JOIN usertable user USING(nric) '+
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
@@ -1128,7 +1128,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					name: result[i].name, 
 					type: result[i].type,
 					title: result[i].title,
@@ -1163,7 +1163,7 @@ app.post('/postingToForum/',(req,res,next)=>{
 	var pinned = '';
 	var reported = '';
 
-	con.query('INSERT INTO forumdata (email,type,name,title,content,anonymous,date,parentID,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+	con.query('INSERT INTO forumdata (nric,type,name,title,content,anonymous,date,parentID,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
 		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
 		function(error,result,fields){
 			if(error){
@@ -1190,7 +1190,7 @@ app.post('/postReply/',(req,res,next)=>{
 	var pinned = '';
 	var reported = '';
 
-	con.query('INSERT INTO forumdata (email,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+	con.query('INSERT INTO forumdata (nric,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
 		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
 			if(error){
@@ -1217,7 +1217,7 @@ app.post('/getReplyPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					type: result[i].type,
 					name: result[i].name, 
 					content: result[i].content,
@@ -1238,7 +1238,7 @@ app.post('/getMyPost/',(req,res,next)=>{
 	var email = post_data.email;
 	var parentID = "";
 	var jsonArray=[];
-	con.query('SELECT * FROM forumdata WHERE email=? AND parentID=? ORDER BY id DESC',[email,parentID],
+	con.query('SELECT * FROM forumdata WHERE nric=? AND parentID=? ORDER BY id DESC',[email,parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -1248,7 +1248,7 @@ app.post('/getMyPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
@@ -1334,7 +1334,7 @@ app.post('/searchPost/',(req,res,next)=>{
 					for (var i = 0; i < result.length; i++) {
 						jsonArray.push({
 						success: '1', 
-						email: result[i].email,  
+						email: result[i].NRIC,  
 						type: result[i].type,  
 						name: result[i].name, 
 						title: result[i].title,
@@ -1359,7 +1359,7 @@ app.post('/addToFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('INSERT INTO favouritelist (email,postID) VALUES (?,?)',
+	con.query('INSERT INTO favouritelist (nric,postID) VALUES (?,?)',
 		[email,postID], 
 		function(error,result,fields){
 			if(error){
@@ -1376,7 +1376,7 @@ app.post('/removeFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('DELETE FROM favouritelist WHERE email=? AND postID=?',
+	con.query('DELETE FROM favouritelist WHERE nric=? AND postID=?',
 		[email,postID], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -1393,7 +1393,7 @@ app.post('/getIsFavourite/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID; 
 
-	con.query('SELECT * FROM favouritelist WHERE email=? AND postID=?',
+	con.query('SELECT * FROM favouritelist WHERE nric=? AND postID=?',
 		[email,postID], function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1413,7 +1413,7 @@ app.post('/myFavouriteList/',(req,res,next)=>{
 	var email = post_data.email;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM forumdata WHERE id in (SELECT postID FROM favouritelist WHERE email=?) ORDER BY id DESC', [email],
+	con.query('SELECT * FROM forumdata WHERE id in (SELECT postID FROM favouritelist WHERE nric=?) ORDER BY id DESC', [email],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1423,7 +1423,7 @@ app.post('/myFavouriteList/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
@@ -1470,7 +1470,7 @@ app.post('/getReportedPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
@@ -1500,7 +1500,7 @@ app.post('/getPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					type: result[i].type, 
 					name: result[i].name, 
 					title: result[i].title,
@@ -1524,7 +1524,7 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM caregiverforumdata forum '+
-		'LEFT JOIN caregivertable user USING(email) '+
+		'LEFT JOIN caregivertable user USING(nric) '+
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
@@ -1536,7 +1536,7 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					name: result[i].name, 
 					type: result[i].type,
 					title: result[i].title,
@@ -1569,7 +1569,7 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 	var pinned = '';
 	var reported = '';
 
-	con.query('INSERT INTO caregiverforumdata (email,type,name,title,content,anonymous,date, parentID, pinned, reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+	con.query('INSERT INTO caregiverforumdata (nric,type,name,title,content,anonymous,date, parentID, pinned, reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
 		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
 		function(error,result,fields){
 			if(error){
@@ -1595,7 +1595,7 @@ app.post('/postReplyCaregiver/',(req,res,next)=>{
 	var pinned = '';
 	var reported = '';
 
-	con.query('INSERT INTO caregiverforumdata (email,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
+	con.query('INSERT INTO caregiverforumdata (nric,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
 		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
 			if(error){
@@ -1622,7 +1622,7 @@ app.post('/getReplyPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email, 
+					email: result[i].NRIC, 
 					type: result[i].type, 
 					name: result[i].name, 
 					content: result[i].content,
@@ -1643,7 +1643,7 @@ app.post('/getMyPostCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var parentID = "";
 	var jsonArray=[];
-	con.query('SELECT * FROM caregiverforumdata WHERE email=? AND parentID=? ORDER BY id DESC',[email, parentID],
+	con.query('SELECT * FROM caregiverforumdata WHERE nric=? AND parentID=? ORDER BY id DESC',[email, parentID],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1653,7 +1653,7 @@ app.post('/getMyPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
@@ -1739,7 +1739,7 @@ app.post('/searchPostCaregiver/',(req,res,next)=>{
 					for (var i = 0; i < result.length; i++) {
 						jsonArray.push({
 						success: '1', 
-						email: result[i].email,
+						email: result[i].NRIC,
 						type: result[i].type,
 						name: result[i].name, 
 						title: result[i].title,
@@ -1790,7 +1790,7 @@ app.post('/getReportedPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					type: result[i].type,	
 					name: result[i].name, 
 					title: result[i].title,
@@ -1820,7 +1820,7 @@ app.post('/getPostCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
@@ -1843,7 +1843,7 @@ app.post('/addToFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('INSERT INTO favouritelistcaregiver (email,postID) VALUES (?,?)',
+	con.query('INSERT INTO favouritelistcaregiver (nric,postID) VALUES (?,?)',
 		[email,postID], 
 		function(error,result,fields){
 			if(error){
@@ -1860,7 +1860,7 @@ app.post('/removeFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID;
 
-	con.query('DELETE FROM favouritelistcaregiver WHERE email=? AND postID=?',
+	con.query('DELETE FROM favouritelistcaregiver WHERE nric=? AND postID=?',
 		[email,postID], function(err, result, fields){
 			if(err){
 				res.json([{success: '0'}]);
@@ -1897,7 +1897,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM caregiverforumdata WHERE id in (SELECT postID FROM favouritelistcaregiver WHERE email=?) ORDER BY id DESC', [email],
+	con.query('SELECT * FROM caregiverforumdata WHERE id in (SELECT postID FROM favouritelistcaregiver WHERE nric=?) ORDER BY id DESC', [email],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1907,7 +1907,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					type: result[i].type,
 					name: result[i].name, 
 					title: result[i].title,
@@ -1927,7 +1927,7 @@ app.post('/getExercise/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
 	var jsonArray=[];
-	con.query('SELECT * FROM exercisesessiontable WHERE email=?', [email],
+	con.query('SELECT * FROM exercisesessiontable WHERE nric=?', [email],
 		function(err,result,fields){
 			con.on('error',function(err){
 			console.log('mysql error',err);
@@ -1937,7 +1937,7 @@ app.post('/getExercise/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					exerciseLevel: result[i].exerciseLevel,
 					startTime: result[i].startTime, 
 					endTime: result[i].endTime,
@@ -1966,7 +1966,7 @@ app.post('/getExerciseDetails/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					exerciseName: result[i].exerciseName,
 					duration: result[i].duration, 
 					sessionId: result[i].sessionId,
@@ -1988,13 +1988,13 @@ app.post('/postExercise/',(req,res,next)=>{
 	var endTime = post_data.endTime;
 	var feeling = post_data.feeling;
 
-	con.query('INSERT INTO exercisesessiontable (email,exerciseLevel,startTime,endTime,feeling) VALUES (?,?,?,?,?)' ,
+	con.query('INSERT INTO exercisesessiontable (nric,exerciseLevel,startTime,endTime,feeling) VALUES (?,?,?,?,?)' ,
 		[email,exerciseLevel,startTime,endTime,feeling], 
 		function(error,result,fields){
 			if(error){
 				res.json({success:'0'});
 			} else {
-				con.query('SELECT * FROM exercisesessiontable WHERE email=? AND startTime=? LIMIT 1',
+				con.query('SELECT * FROM exercisesessiontable WHERE nric=? AND startTime=? LIMIT 1',
 					[email,startTime],
 					function(error,result,fields){
 						if(error){
@@ -2021,7 +2021,7 @@ app.post('/postExerciseDetails/',(req,res,next)=>{
 	var exerciseName = post_data.exerciseName;
 	var duration = post_data.duration;
 		
-		con.query('INSERT INTO exercisedetailtable (email,sessionId,exerciseName,duration) VALUES (?,?,?,?)',
+		con.query('INSERT INTO exercisedetailtable (nric,sessionId,exerciseName,duration) VALUES (?,?,?,?)',
 			[email,sessionId,exerciseName,duration], 
 			function(error,result,fields){
 				if(error){
@@ -2072,7 +2072,7 @@ app.post('/postQuestionnaire/',(req,res,next)=>{
 	var period = post_data.period;
 	var answer = post_data.answer;
 
-	con.query('INSERT INTO questionnairetable (email, date, period, answer) VALUES (?,?,?,?)'
+	con.query('INSERT INTO questionnairetable (nric, date, period, answer) VALUES (?,?,?,?)'
 		,[email,date,period,answer],
 		function(err,result,fields){
 				if(err){
@@ -2093,7 +2093,7 @@ app.post('/getQuestionnaire/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
 	var jsonArray=[];
-	con.query('SELECT * FROM questionnairetable WHERE email=?',
+	con.query('SELECT * FROM questionnairetable WHERE nric=?',
 		[email],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -2104,7 +2104,7 @@ app.post('/getQuestionnaire/',(req,res,next)=>{
 			for (var i = 0; i < result.length; i++) {
 				jsonArray.push({
 					success: '1', 
-					email: result[i].email,
+					email: result[i].NRIC,
 					date: result[i].date,
 					period: result[i].period, 
 					answer: result[i].answer,
@@ -2138,14 +2138,14 @@ app.post('/deleteQuestionnaire/',(req,res,next)=>{
 app.post('/postChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
 
-	let emailFrom = post_data.emailFrom;
-	let emailTo = post_data.emailTo;
+	let NRICFrom = post_data.NRICFrom;
+	let NRICTo = post_data.NRICTo;
 	let chatChannelId = post_data.chatChannelId;
 	let receiverName = post_data.receiverName;
 	let receiverType = post_data.receiverType;
 
-	con.query('INSERT INTO chatchanneltable (emailFrom, emailTo, chatChannelId, receiverName, receiverType) VALUES (?,?,?,?,?)',
-		[emailFrom, emailTo, chatChannelId, receiverName, receiverType],
+	con.query('INSERT INTO chatchanneltable (NRICFrom, NRICTo, chatChannelId, receiverName, receiverType) VALUES (?,?,?,?,?)',
+		[NRICFrom, NRICTo, chatChannelId, receiverName, receiverType],
 		function(err,result,fields){
 			if(err){
 				console.log('success: 0');
@@ -2160,10 +2160,10 @@ app.post('/postChatChannel/',(req,res,next)=>{
 
 app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
-	let emailFrom = post_data.emailFrom;
+	let NRICFrom = post_data.NRICFrom;
 
-	con.query('SELECT * FROM chatchanneltable WHERE emailFrom=?',
-		[emailFrom],
+	con.query('SELECT * FROM chatchanneltable WHERE NRICFrom=?',
+		[NRICFrom],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -2174,8 +2174,8 @@ app.post('/getChatChannel/',(req,res,next)=>{
 					jsonArray.push({
 						success: '1', 
 						id: result[i].id,
-						emailFrom: result[i].emailFrom,
-						emailTo: result[i].emailTo,
+						NRICFrom: result[i].NRICFrom,
+						NRICTo: result[i].NRICTo,
 						chatChannelId: result[i].chatChannelId,
 						receiverName: result[i].receiverName,
 						receiverType: result[i].receiverType
