@@ -1116,7 +1116,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 	con.query('SELECT forum.* ,'+
 		'user.photo '+
 		'FROM forumdata forum '+
-		'LEFT JOIN usertable user USING(nric) '+
+		'LEFT JOIN usertable user USING(NRIC) '+
 		'WHERE forum.parentID=? ORDER BY id DESC LIMIT 30',
 		[parentID],
 		function(err,result,fields){
@@ -1141,7 +1141,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 
 			}
 			res.json(jsonArray);
-			// console.log(jsonArray);
+			console.log(jsonArray);
 		} else{
 			console.log(err);
 			res.json([{success:'-1'}]);
