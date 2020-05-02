@@ -85,6 +85,7 @@ app.post('/register/',(req,res,next)=>{
 	var contactNo = post_data.contact;
 	var age = post_data.age;
 	var photo = post_data.photo;
+	var nric = post_data.nric;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -108,7 +109,7 @@ app.post('/register/',(req,res,next)=>{
 	
 	
 
-	con.query('SELECT * FROM usertable WHERE email=?',[email],
+	con.query('SELECT * FROM usertable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('[MYSQL error]',err);
@@ -120,7 +121,7 @@ app.post('/register/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO usertable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)',[name,email,password,contactNo,age,salt,photo],
+			con.query('INSERT INTO usertable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)',[name,nric,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -148,6 +149,7 @@ app.post('/register2/',(req,res,next)=>{
 	var age = post_data.age;
 	var relationship = post_data.relationship;
 	var photo = post_data.photo;
+	var nric = post_data.nric;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -169,7 +171,7 @@ app.post('/register2/',(req,res,next)=>{
 	console.log('salt: ',salt);
 	
 
-	con.query('SELECT * FROM caregivertable WHERE email=?',[email],
+	con.query('SELECT * FROM caregivertable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('[MYSQL error]',err);
@@ -181,8 +183,8 @@ app.post('/register2/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO caregivertable (name, email, password, contactNo, age, salt, relationship,photo) VALUES (?,?,?,?,?,?,?,?)'
-				,[name,email,password,contactNo,age,salt,relationship,photo],
+			con.query('INSERT INTO caregivertable (name, nric, email, password, contactNo, age, salt, relationship,photo) VALUES (?,?,?,?,?,?,?,?,?)'
+				,[name,nric,email,password,contactNo,age,salt,relationship,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -209,6 +211,7 @@ app.post('/register3/',(req,res,next)=>{
 	var contactNo = post_data.contact;
 	var age = post_data.age;
 	var photo = post_data.photo;
+	var nric = post_data.nric;
 
 	// var name = 'l';
 	// var email = 'ju@gmail.com';
@@ -230,7 +233,7 @@ app.post('/register3/',(req,res,next)=>{
 	console.log('salt: ',salt);
 	
 
-	con.query('SELECT * FROM specialisttable WHERE email=?',[email],
+	con.query('SELECT * FROM specialisttable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('[MYSQL error]',err);
@@ -242,8 +245,8 @@ app.post('/register3/',(req,res,next)=>{
 		}
 		else{
 			console.log('User new user');
-			con.query('INSERT INTO specialisttable (name, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?)'
-				,[name,email,password,contactNo,age,salt,photo],
+			con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
+				,[name,nric,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
@@ -272,12 +275,12 @@ app.post('/login/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
-	var email = post_data.email;
+	var nric = post_data.nric;
 
 	// var user_password = 'hello';
 	// var email = 'he@gmail.com';
 
-	con.query('SELECT * FROM usertable WHERE email=? ',[email],
+	con.query('SELECT * FROM usertable WHERE nric=? ',[nric],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -291,7 +294,7 @@ app.post('/login/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, email: result[0].email}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
 			}
 
 			else if(user_password == salt){
@@ -314,12 +317,12 @@ app.post('/login2/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
-	var email = post_data.email;
+	var nric = post_data.nric;
 
 	// var user_password = 'hello';
 	// var email = 'he@gmail.com';
 
-	con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
+	con.query('SELECT * FROM caregivertable WHERE nric=? ',[nric],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -333,7 +336,7 @@ app.post('/login2/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, email: result[0].email}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
 			}
 
 			else if(user_password == salt){
@@ -356,12 +359,12 @@ app.post('/login3/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
-	var email = post_data.email;
+	var nric = post_data.nric;
 
 	// var user_password = 'hello';
-	// var email = 'he@gmail.com';
+	// var nric = 'he@gmail.com';
 
-	con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
+	con.query('SELECT * FROM specialisttable WHERE nric=? ',[nric],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
@@ -375,7 +378,7 @@ app.post('/login3/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, email: result[0].email}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
 			}
 
 			else if(user_password == salt){
