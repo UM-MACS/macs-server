@@ -2282,6 +2282,7 @@ app.post('/postChatChannel/',(req,res,next)=>{
 app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
 	let NRICFrom = post_data.NRICFrom;
+	var jsonArray=[];
 
 	con.query('SELECT * FROM chatchanneltable WHERE NRICFrom=?',
 		[NRICFrom],
@@ -2312,6 +2313,7 @@ app.post('/getChatChannel/',(req,res,next)=>{
 
 app.post('/getAllPatient/',(req,res,next)=>{
 	let post_data = req.body;
+	var jsonArray=[];
 
 	con.query('SELECT * FROM usertable',
 		"",
@@ -2342,6 +2344,7 @@ app.post('/getAllPatient/',(req,res,next)=>{
 
 app.post('/getAllCaregiver/',(req,res,next)=>{
 	let post_data = req.body;
+	var jsonArray=[];
 
 	con.query('SELECT * FROM caregivertable',
 		"",
@@ -2372,6 +2375,7 @@ app.post('/getAllCaregiver/',(req,res,next)=>{
 
 app.post('/getAllSpecialist/',(req,res,next)=>{
 	let post_data = req.body;
+	var jsonArray=[];
 
 	con.query('SELECT * FROM specialisttable',
 		"",
