@@ -2326,7 +2326,10 @@ app.post('/getAllPatient/',(req,res,next)=>{
 						success: '1', 
 						id: result[i].id,
 						name: result[i].name,
-						email: result[i].email
+						email: result[i].email,
+						nric: result[i].nric,
+						contactNo: result[i].contactNo,
+						age: result[i].age
 					});
 				}
 				res.json(jsonArray);
@@ -2353,7 +2356,10 @@ app.post('/getAllCaregiver/',(req,res,next)=>{
 						success: '1', 
 						id: result[i].id,
 						name: result[i].name,
-						email: result[i].email
+						email: result[i].email,
+						nric: result[i].nric,
+						contactNo: result[i].contactNo,
+						age: result[i].age
 					});
 				}
 				res.json(jsonArray);
@@ -2380,7 +2386,10 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 						success: '1', 
 						id: result[i].id,
 						name: result[i].name,
-						email: result[i].email
+						email: result[i].email,
+						nric: result[i].nric,
+						contactNo: result[i].contactNo,
+						age: result[i].age
 					});
 				}
 				res.json(jsonArray);
@@ -2389,6 +2398,54 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 			}
 		}
 	);
+})
+
+app.post('/deletePatient/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM usertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+app.post('/deleteCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM caregivertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+app.post('/deleteSpecialist/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM specialisttable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
 })
 
 //start server
