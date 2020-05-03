@@ -340,7 +340,7 @@ app.post('/login2/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
 			}
 
 			else if(user_password == salt){
@@ -382,7 +382,7 @@ app.post('/login3/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
 			}
 
 			else if(user_password == salt){
@@ -797,6 +797,93 @@ app.post('/resetPassword3/',(req,res,next)=>{
 				 });
 		}
 		});
+})
+
+
+
+/*get patient user detail*/
+app.post('/getDetailsPatient/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM usertable WHERE nric=?',[nric], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			} else{
+				if(result && result.length)	{
+					for (var i = 0; i < result.length; i++) {
+						jsonArray.push({
+							success: '1', 
+							name: result[i].name,
+							email: result[i].email,
+							age: result[i].age,
+							phoneNo: result[i].contactNo});
+					}
+					res.json(jsonArray);
+				} else{
+					res.json([{success:'-1'}]);
+					console.log(error);
+				}
+			}
+		})
+})
+
+/*get caregiver user detail*/
+app.post('/getDetailsCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM caregivertable WHERE nric=?',[nric], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			} else{
+				if(result && result.length)	{
+					for (var i = 0; i < result.length; i++) {
+						jsonArray.push({
+							success: '1', 
+							name: result[i].name,
+							email: result[i].email,
+							age: result[i].age,
+							phoneNo: result[i].contactNo});
+					}
+					res.json(jsonArray);
+				} else{
+					res.json([{success:'-1'}]);
+				}
+			}
+		})
+})
+
+/*get specialist user detail*/
+app.post('/getDetailsSpecialist/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM specialisttable WHERE nric=?',[nric], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			} else{
+				if(result && result.length)	{
+					for (var i = 0; i < result.length; i++) {
+						jsonArray.push({
+							success: '1', 
+							name: result[i].name,
+							email: result[i].email,
+							age: result[i].age,
+							phoneNo: result[i].contactNo});
+					}
+					res.json(jsonArray);
+				} else{
+					res.json([{success:'-1'}]);
+				}
+			}
+		})
 })
 
 
