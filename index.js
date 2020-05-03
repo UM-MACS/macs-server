@@ -2326,12 +2326,12 @@ app.post('/getAllPatient/',(req,res,next)=>{
 				for (var i = 0; i < result.length; i++) {
 					jsonArray.push({
 						success: '1', 
-						id: result[i].id,
-						name: result[i].name,
-						email: result[i].email,
-						nric: result[i].nric,
-						contactNo: result[i].contactNo,
-						age: result[i].age
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
 					});
 				}
 				res.json(jsonArray);
@@ -2357,12 +2357,12 @@ app.post('/getAllCaregiver/',(req,res,next)=>{
 				for (var i = 0; i < result.length; i++) {
 					jsonArray.push({
 						success: '1', 
-						id: result[i].id,
-						name: result[i].name,
-						email: result[i].email,
-						nric: result[i].nric,
-						contactNo: result[i].contactNo,
-						age: result[i].age
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
 					});
 				}
 				res.json(jsonArray);
@@ -2388,12 +2388,12 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 				for (var i = 0; i < result.length; i++) {
 					jsonArray.push({
 						success: '1', 
-						id: result[i].id,
-						name: result[i].name,
-						email: result[i].email,
-						nric: result[i].nric,
-						contactNo: result[i].contactNo,
-						age: result[i].age
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
 					});
 				}
 				res.json(jsonArray);
