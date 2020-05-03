@@ -888,6 +888,70 @@ app.post('/getDetailsSpecialist/',(req,res,next)=>{
 
 
 
+/* Update Patient Detail Acticity*/
+app.post('/updateDetailPatient/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var email = post_data.email;
+	var name = post_data.name;
+	var phoneNo = post_data.phoneNo;
+	var age = post_data.age;
+	
+	con.query('UPDATE usertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
+		 [email,name,phoneNo,age,nric], function(error,result,fields){
+		 	if(error){
+		 		//fail to update
+		 		res.json({success: '0'});
+		 	} else{
+		 		//update success
+		 		res.json({success:'1'});
+		 	}
+ 	});
+})
+
+/* Update Caregiver Detail Acticity*/
+app.post('/updateDetailCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var email = post_data.email;
+	var name = post_data.name;
+	var phoneNo = post_data.phoneNo;
+	var age = post_data.age;
+	
+	con.query('UPDATE caregivertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
+		 [email,name,phoneNo,age,nric], function(error,result,fields){
+		 	if(error){
+		 		//fail to update
+		 		res.json({success: '0'});
+		 	} else{
+		 		//update success
+		 		res.json({success:'1'});
+		 	}
+ 	});
+})
+
+/* Update Specialist Detail Acticity*/
+app.post('/updateDetailSpecialist/',(req,res,next)=>{
+	var post_data = req.body;
+	var nric = post_data.nric;
+	var email = post_data.email;
+	var name = post_data.name;
+	var phoneNo = post_data.phoneNo;
+	var age = post_data.age;
+	
+	con.query('UPDATE specialisttable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
+		 [email,name,phoneNo,age,nric], function(error,result,fields){
+		 	if(error){
+		 		//fail to update
+		 		res.json({success: '0'});
+		 	} else{
+		 		//update success
+		 		res.json({success:'1'});
+		 	}
+ 	});
+})
+
+
 
 
 /* Emotion Activity*/
