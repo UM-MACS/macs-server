@@ -340,7 +340,7 @@ app.post('/login2/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
 			}
 
 			else if(user_password == salt){
@@ -382,7 +382,7 @@ app.post('/login3/',(req,res,next)=>{
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].nric}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
 			}
 
 			else if(user_password == salt){
