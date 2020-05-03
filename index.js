@@ -894,7 +894,7 @@ app.post('/updateDetailsPatient/',(req,res,next)=>{
 	var nric = post_data.nric;
 	var email = post_data.email;
 	var name = post_data.name;
-	var phoneNo = post_data.phoneNo;
+	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
 	
 	con.query('UPDATE usertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
@@ -915,7 +915,7 @@ app.post('/updateDetailsCaregiver/',(req,res,next)=>{
 	var nric = post_data.nric;
 	var email = post_data.email;
 	var name = post_data.name;
-	var phoneNo = post_data.phoneNo;
+	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
 	
 	con.query('UPDATE caregivertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
@@ -936,7 +936,7 @@ app.post('/updateDetailsSpecialist/',(req,res,next)=>{
 	var nric = post_data.nric;
 	var email = post_data.email;
 	var name = post_data.name;
-	var phoneNo = post_data.phoneNo;
+	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
 	
 	con.query('UPDATE specialisttable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
