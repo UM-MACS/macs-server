@@ -2346,6 +2346,7 @@ app.post('/postChatChannel/',(req,res,next)=>{
 app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
 	let NRICFrom = post_data.NRICFrom;
+	var jsonArray=[];
 
 	con.query('SELECT * FROM chatchanneltable WHERE NRICFrom=?',
 		[NRICFrom],
@@ -2372,6 +2373,147 @@ app.post('/getChatChannel/',(req,res,next)=>{
 			}
 		}
 	);
+})
+
+app.post('/getAllPatient/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM usertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+app.post('/getAllCaregiver/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM caregivertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+app.post('/getAllSpecialist/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM specialisttable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].nric ? result[i].nric : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+app.post('/deletePatient/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM usertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+app.post('/deleteCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM caregivertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+app.post('/deleteSpecialist/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM specialisttable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
 })
 
 //start server
