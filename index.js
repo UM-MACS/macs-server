@@ -889,7 +889,7 @@ app.post('/getDetailsSpecialist/',(req,res,next)=>{
 
 
 /* Update Patient Detail Acticity*/
-app.post('/updateDetailPatient/',(req,res,next)=>{
+app.post('/updateDetailsPatient/',(req,res,next)=>{
 	var post_data = req.body;
 	var nric = post_data.nric;
 	var email = post_data.email;
@@ -910,7 +910,7 @@ app.post('/updateDetailPatient/',(req,res,next)=>{
 })
 
 /* Update Caregiver Detail Acticity*/
-app.post('/updateDetailCaregiver/',(req,res,next)=>{
+app.post('/updateDetailsCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
 	var nric = post_data.nric;
 	var email = post_data.email;
@@ -931,7 +931,7 @@ app.post('/updateDetailCaregiver/',(req,res,next)=>{
 })
 
 /* Update Specialist Detail Acticity*/
-app.post('/updateDetailSpecialist/',(req,res,next)=>{
+app.post('/updateDetailsSpecialist/',(req,res,next)=>{
 	var post_data = req.body;
 	var nric = post_data.nric;
 	var email = post_data.email;
