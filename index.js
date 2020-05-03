@@ -2393,7 +2393,7 @@ app.post('/getAllPatient/',(req,res,next)=>{
 						id: result[i].id ? result[i].id : 'null',
 						name: result[i].name ? result[i].name : 'null',
 						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].nric ? result[i].nric : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
 						age: result[i].age ? result[i].age : 'null'
 					});
@@ -2424,7 +2424,7 @@ app.post('/getAllCaregiver/',(req,res,next)=>{
 						id: result[i].id ? result[i].id : 'null',
 						name: result[i].name ? result[i].name : 'null',
 						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].nric ? result[i].nric : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
 						age: result[i].age ? result[i].age : 'null'
 					});
@@ -2455,7 +2455,7 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 						id: result[i].id ? result[i].id : 'null',
 						name: result[i].name ? result[i].name : 'null',
 						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].nric ? result[i].nric : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
 						age: result[i].age ? result[i].age : 'null'
 					});
