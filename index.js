@@ -2516,6 +2516,38 @@ app.post('/deleteSpecialist/',(req,res,next)=>{
 		});
 })
 
+app.post('/getChatByChatChannelId',(req,res,next) => {
+	let post_data = req.body;
+	let chatChannelId = post_data.chatChannelId;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM chatchanneltable WHERE chatChannelId=?',
+		[chatChannelId],
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id,
+						NRICFrom: result[i].NRICFrom,
+						NRICTo: result[i].NRICTo,
+						chatChannelId: result[i].chatChannelId,
+						receiverName: result[i].receiverName,
+						receiverType: result[i].receiverType
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
 //start server
 const port = process.env.PORT || 3000
 app.listen(port, ()=>{
