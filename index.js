@@ -2395,7 +2395,8 @@ app.post('/getAllPatient/',(req,res,next)=>{
 						email: result[i].email ? result[i].email : 'null',
 						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null'
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
 					});
 				}
 				res.json(jsonArray);
@@ -2426,7 +2427,8 @@ app.post('/getAllCaregiver/',(req,res,next)=>{
 						email: result[i].email ? result[i].email : 'null',
 						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null'
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
 					});
 				}
 				res.json(jsonArray);
@@ -2457,7 +2459,8 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 						email: result[i].email ? result[i].email : 'null',
 						nric: result[i].NRIC ? result[i].NRIC : 'null',
 						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null'
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
 					});
 				}
 				res.json(jsonArray);
