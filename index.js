@@ -2551,6 +2551,34 @@ app.post('/getChatByChatChannelId',(req,res,next) => {
 	);
 })
 
+app.post('/getChatIfExist',(req,res,next) => {
+	let post_data = req.body;
+	let NRICFrom = post_data.NRICFrom;
+	let NRICTo = post_data.NRICTo;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM chatchanneltable WHERE NRICTo=? AND NRICFrom=?',
+		[NRICTo,NRICFrom],
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						chatChannelId: result[i].chatChannelId,
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'2'}]);
+			}
+		}
+	);
+})
+
 //start server
 const port = process.env.PORT || 3000
 app.listen(port, ()=>{
