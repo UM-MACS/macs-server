@@ -22,13 +22,13 @@ var bodyParser = require('body-parser');
 // 	database: 'sql12326582'
 // });
 
-//000webhost new
+//freesqldatabase new
 var con = mysql.createConnection({
-	host: '000webhost.com',
+	host:'sql12.freesqldatabase.com',
 	port: '3306',
-	user: 'id14087957_masc_user',
-	password: 'FZdQ~Z8&=]F?|+4o',
-	database: 'id14087957_masc_db'
+	user: 'sql12348487',
+	password: '3v6R4WJ5rz',
+	database: 'sql12348487'
 });
 
 //db4free new
