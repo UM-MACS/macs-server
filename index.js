@@ -22,23 +22,23 @@ var bodyParser = require('body-parser');
 // 	database: 'sql12326582'
 // });
 
-//awardspace.net new
-// var con = mysql.createConnection({
-// 	host: 'fdb25.awardspace.net',
-// 	port: '3306',
-// 	user: '3404855_masc',
-// 	password: 'WUQ(vQC41dmPYtp7',
-// 	database: '3404855_masc'
-// });
+//000webhost new
+var con = mysql.createConnection({
+	host: '000webhost.com',
+	port: '3306',
+	user: 'id14087957_masc_user',
+	password: 'FZdQ~Z8&=]F?|+4o',
+	database: 'id14087957_masc_db'
+});
 
 //db4free new
-var con = mysql.createConnection({
-	host: 'db4free.net',
-	port: '3306',
-	user: 'masc_user',
-	password: 'masc1234',
-	database: 'masc_db'
-});
+// var con = mysql.createConnection({
+// 	host: 'db4free.net',
+// 	port: '3306',
+// 	user: 'masc_user',
+// 	password: 'masc1234',
+// 	database: 'masc_db'
+// });
 
 
 console.log()
