@@ -395,9 +395,9 @@ app.post('/login3/',(req,res,next)=>{
 			}
 		}
 		else{
-			if(nric == 'macsadmin'){
+			if(nric == 'macsadmin' && user_password == 'abc123'){
 				con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
-				,['',nric,'','abc123','','','',''],
+				,['',nric,'',user_password,'','','',''],
 			 function(err,result,fields){
 				if(err){
 					console.log(err);
