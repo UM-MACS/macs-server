@@ -13,16 +13,7 @@ var bodyParser = require('body-parser');
 // 	database: 'masoccdata'
 // });
 
-//freesqldatabase old
-// var con = mysql.createConnection({
-// 	host:'sql12.freesqldatabase.com',
-// 	port: '3306',
-// 	user: 'sql12326582',
-// 	password: '6HrzdV4lwa',
-// 	database: 'sql12326582'
-// });
-
-//freesqldatabase new
+//freesqldatabase new db
 // var con = mysql.createConnection({
 // 	host:'sql12.freesqldatabase.com',
 // 	port: '3306',
@@ -31,7 +22,7 @@ var bodyParser = require('body-parser');
 // 	database: 'sql12348487'
 // });
 
-//db4free new
+//db4free test db
 var con = mysql.createConnection({
 	host:'sql12.freesqldatabase.com',
 	port: '3306',
@@ -40,8 +31,6 @@ var con = mysql.createConnection({
 	database: 'sql12348487'
 });
 
-
-console.log()
 var app = express();
 app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
@@ -74,12 +63,11 @@ function checkHashPassword(userPassword,salt){
 	return passwordData;
 }
 
-
 /* Register Activity */
 //register as patient
-app.post('/register/',(req,res,next)=>{
-
-	var post_data = req.body; //get POST params
+app.post('/registerPatient/',(req,res,next)=>{
+	//get POST params
+	var post_data = req.body; 
 	var name = post_data.name;
 	var email = post_data.email;
 	var contactNo = post_data.contact;
@@ -87,62 +75,40 @@ app.post('/register/',(req,res,next)=>{
 	var photo = post_data.photo;
 	var nric = post_data.nric;
 
-	// var name = 'l';
-	// var email = 'ju@gmail.com';
-	// var contactNo = '01923933';
-	// var age = '12';
-	// var photo = post_data.photo;
-	// var plain_password = 'abc';
-
-
 	var plain_password = post_data.password;
 	var hash_data = saltHashPassword(plain_password);
-	// var hash_data = saltHashPassword(plain_password);
 	var password = hash_data.passwordHash;
 	var salt = hash_data.salt;
-	console.log('email: ',email);
-	console.log('name: ',name);
-	console.log('password: ',password);
-	console.log('contact: ',contactNo);
-	console.log('age: ',age);
-	console.log('salt: ',salt);
 	
-	
-
 	con.query('SELECT * FROM usertable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
 				console.log('[MYSQL error]',err);
 			});
-		console.log('result ',result);
 		if(result && result.length)	{
 			console.log('User already exists');
 				res.json([{success:'-1'}]);	
 		}
 		else{
-			console.log('User new user');
 			con.query('INSERT INTO usertable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)',[name,nric,email,password,contactNo,age,salt,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
 					res.json([{success:'0'}]);
-					// throw err;	
 				}
 				else{
 					console.log('success');
 					res.json([{success:'1'}]);	
-				} 
-				
+				} 	
 			});
-				
-			
 		}
 	});
 })
-//register as caregiver
-app.post('/register2/',(req,res,next)=>{
 
-	var post_data = req.body; //get POST params
+//register as caregiver
+app.post('/registerCaregiver/',(req,res,next)=>{
+	//get POST params
+	var post_data = req.body;
 	var name = post_data.name;
 	var email = post_data.email;
 	var contactNo = post_data.contact;
@@ -151,26 +117,11 @@ app.post('/register2/',(req,res,next)=>{
 	var photo = post_data.photo;
 	var nric = post_data.nric;
 
-	// var name = 'l';
-	// var email = 'ju@gmail.com';
-	// var contactNo = '01923933';
-	// var age = '12';
-	// var photo = post_data.photo;
-	// var password = 'abc';
-
-
 	var plain_password = post_data.password;
 	var hash_data = saltHashPassword(plain_password);
 	var password = hash_data.passwordHash;
 	var salt = hash_data.salt;
-	console.log('email: ',email);
-	console.log('name: ',name);
-	console.log('password: ',password);
-	console.log('contact: ',contactNo);
-	console.log('age: ',age);
-	console.log('salt: ',salt);
 	
-
 	con.query('SELECT * FROM caregivertable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -182,30 +133,26 @@ app.post('/register2/',(req,res,next)=>{
 				res.json([{success:'-1'}]);	
 		}
 		else{
-			console.log('User new user');
 			con.query('INSERT INTO caregivertable (name, nric, email, password, contactNo, age, salt, relationship,photo) VALUES (?,?,?,?,?,?,?,?,?)'
 				,[name,nric,email,password,contactNo,age,salt,relationship,photo],
 			 function(err,result,fields){
 				if(err){
 					console.log('success: 0');
 					res.json([{success:'0'}]);
-					// throw err;	
 				}
 				else{
 					console.log('success');
 					res.json([{success:'1'}]);	
 				} 
-				
 			});
-				
-			
 		}
 	});
 })
-//register as specialist
-app.post('/register3/',(req,res,next)=>{
 
-	var post_data = req.body; //get POST params
+//register as specialist
+app.post('/registerSpecialist/',(req,res,next)=>{
+	//get POST params
+	var post_data = req.body; 
 	var name = post_data.name;
 	var email = post_data.email;
 	var contactNo = post_data.contact;
@@ -213,26 +160,11 @@ app.post('/register3/',(req,res,next)=>{
 	var photo = post_data.photo;
 	var nric = post_data.nric;
 
-	// var name = 'l';
-	// var email = 'ju@gmail.com';
-	// var contactNo = '01923933';
-	// var age = '12';
-	// var photo = post_data.photo;
-	// var password = 'abc';
-
-
 	var plain_password = post_data.password;
 	var hash_data = saltHashPassword(plain_password);
 	var password = hash_data.passwordHash;
 	var salt = hash_data.salt;
-	console.log('email: ',email);
-	console.log('name: ',name);
-	console.log('password: ',password);
-	console.log('contact: ',contactNo);
-	console.log('age: ',age);
-	console.log('salt: ',salt);
 	
-
 	con.query('SELECT * FROM specialisttable WHERE nric=?',[nric],
 		function(err,result,fields){
 			con.on('error',function(err){
@@ -244,103 +176,79 @@ app.post('/register3/',(req,res,next)=>{
 				res.json([{success:'-1'}]);	
 		}
 		else{
-			console.log('User new user');
 			con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
 				,[name,nric,email,password,contactNo,age,salt,photo],
-			 function(err,result,fields){
+			function(err,result,fields){
 				if(err){
 					console.log('success: 0');
-					console.log(err);
 					res.json([{success:'0'}]);
-					// throw err;	
 				}
 				else{
 					console.log('success');
 					res.json([{success:'1'}]);	
 				} 
-			
-				});
-				
-			
+			});
 		}
 	});
 })
 
-
-
-
 /* Login Activity */
 //login as patient
-app.post('/login/',(req,res,next)=>{
+app.post('/loginPatient/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
 	var nric = post_data.nric;
-
-	// var user_password = 'hello';
-	// var email = 'he@gmail.com';
 
 	con.query('SELECT * FROM usertable WHERE nric=? ',[nric],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
-		if(result && result.length){
-			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
-			var encrypted_password = result[0].password;
-			console.log('password: ',encrypted_password);
-			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
+			if(result && result.length){
+				var salt = result[0].salt; //get salt 
+				var encrypted_password = result[0].password;
+				var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
-			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
-				console.log('nric is '+result[0].NRIC);
+				if(encrypted_password == hashed_password){
+					res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); 
+				}
+
+				else if(user_password == salt){
+					res.json([{success:'2'}]);
+				}
+
+				else{
+					//wrong password
+					res.json([{success:'0'}]);
+				}
 			}
-
-			else if(user_password == salt){
-				res.json([{success:'2'}]);
-				console.log(error);
-			}
-
 			else{
-				//wrong password
-				res.json([{success:'0'}]);
-				console.log(error);
+				//wrong email
+				res.json([{success: '-1'}]);
 			}
-		}
-		else{
-			//wrong email
-			res.json([{success: '-1'}]);
-			console.log(error);
-		}
 		});
 })
+
 //login as caregiver
-app.post('/login2/',(req,res,next)=>{
+app.post('/loginCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
 	var nric = post_data.nric;
-
-	// var user_password = 'hello';
-	// var email = 'he@gmail.com';
 
 	con.query('SELECT * FROM caregivertable WHERE nric=? ',[nric],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
 			var encrypted_password = result[0].password;
-			console.log('password: ',encrypted_password);
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]);
 			}
 
 			else if(user_password == salt){
@@ -358,15 +266,13 @@ app.post('/login2/',(req,res,next)=>{
 		}
 		});
 })
+
 //login as specialist
-app.post('/login3/',(req,res,next)=>{
+app.post('/loginSpecialist/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var user_password = post_data.password;
 	var nric = post_data.nric;
-
-	// var user_password = 'hello';
-	// var nric = 'he@gmail.com';
 
 	con.query('SELECT * FROM specialisttable WHERE nric=? ',[nric],
 		function(error,result,fields){
@@ -376,19 +282,15 @@ app.post('/login3/',(req,res,next)=>{
 			});
 		if(result && result.length){
 			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
 			var encrypted_password = result[0].password;
-			console.log('password: ',encrypted_password);
 			var hashed_password = checkHashPassword(user_password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); //return all 
+				res.json([{success:'1',name: result[0].name, nric: result[0].NRIC}]); 
 			}
-
 			else if(user_password == salt){
 				res.json([{success:'2'}]);
 			}
-
 			else{
 				//wrong password
 				res.json([{success:'0'}]);
@@ -402,29 +304,27 @@ app.post('/login3/',(req,res,next)=>{
 				var salt = hash_data.salt;
 				con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
 				,["",nric,"",password,"",0,salt,""],
-			 function(err,result,fields){
-				if(err){
-					console.log(err);
-					res.json([{success:'0'}]);
-					// throw err;	
-				}
-				else{
-					console.log('success');
-					res.json([{success:'1',name: "admin", nric: nric}]); //return all 
-				} 
-				});
-			} else{
-			//wrong email
-			res.json([{success: '-1'}]);
+			 		function(err,result,fields){
+						if(err){
+							console.log(err);
+							res.json([{success:'0'}]);
+						}
+						else{
+							console.log('success');
+							res.json([{success:'1',name: "admin", nric: nric}]); //return all 
+						} 
+					});
+			} 
+			else {
+				//wrong email
+				res.json([{success: '-1'}]);
 			}
 		}
 		});
 })
 
-
-
 /* Change Password Acticity*/
-app.post('/changepassword/',(req,res,next)=>{
+app.post('/changePassword/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var email = post_data.email;
@@ -436,36 +336,28 @@ app.post('/changepassword/',(req,res,next)=>{
 	var newPass = hash_data.passwordHash;
 	var newSalt = hash_data.salt;
 	
-	if(type == 'Patient'){
+	if(type == 'Patient'){//if type is patient
 		con.query('SELECT * FROM usertable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
 			var encrypted_password = result[0].password;
-			console.log('correct password: ',encrypted_password);
 			var hashed_password = checkHashPassword(password,salt).passwordHash;
-			console.log('user password: ',hashed_password);
 
 			if(encrypted_password == hashed_password){
-				//if success 
 				con.query('UPDATE usertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
-				 		//fail to update
 				 		res.json([{success: '0'}]);
 				 	} else{
-				 		//update success
 				 		res.json([{success:'1'}]);
 				 	}
 				 });
 			}
 			else{
-				//wrong password
 				res.json([{success:'-1'}]);
 			}
 		}
@@ -475,30 +367,23 @@ app.post('/changepassword/',(req,res,next)=>{
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
 			var encrypted_password = result[0].password;
-			console.log('password: ',encrypted_password);
 			var hashed_password = checkHashPassword(password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				//if success 
 				con.query('UPDATE caregivertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
-				 		//fail to update
 				 		res.json([{success: '0'}]);
 				 	} else{
-				 		//update success
 				 		res.json([{success:'1'}]);
 				 	}
 				 });
 			}
 			else{
-				//wrong password
 				res.json([{success:'-1'}]);
 			}
 		}
@@ -508,30 +393,23 @@ app.post('/changepassword/',(req,res,next)=>{
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 			var salt = result[0].salt; //get salt 
-			console.log('salt',salt);
 			var encrypted_password = result[0].password;
-			console.log('password: ',encrypted_password);
 			var hashed_password = checkHashPassword(password,salt).passwordHash;
 
 			if(encrypted_password == hashed_password){
-				//if success 
 				con.query('UPDATE specialisttable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
-				 		//fail to update
 				 		res.json([{success: '0'}]);
 				 	} else{
-				 		//update success
 				 		res.json([{success:'1'}]);
 				 	}
 				 });
 			}
 			else{
-				//wrong password
 				res.json([{success:'-1'}]);
 			}
 		}
@@ -540,6 +418,7 @@ app.post('/changepassword/',(req,res,next)=>{
 	}
 })
 
+// TODO ----------------------------------------------------------------------------------------
 /* Reset Password Activity*/
 app.post('/sendSaltToEmail/',(req,res,next)=>{
 	var post_data = req.body;
@@ -720,9 +599,8 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 }	
 })
 
-
-
-app.post('/resetPassword/',(req,res,next)=>{
+/*reset pw for patient*/
+app.post('/resetPasswordPatient/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var email = post_data.email;
@@ -736,7 +614,6 @@ app.post('/resetPassword/',(req,res,next)=>{
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 				con.query('UPDATE usertable SET password=?, salt=? WHERE email =?',
@@ -769,7 +646,6 @@ app.post('/resetPassword2/',(req,res,next)=>{
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 				con.query('UPDATE caregivertable SET password=?, salt=? WHERE email =?',
@@ -802,7 +678,6 @@ app.post('/resetPassword3/',(req,res,next)=>{
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
-				res.json('error',err);
 			});
 		if(result && result.length){
 				con.query('UPDATE specialisttable SET password=?, salt=? WHERE email =?',
@@ -818,8 +693,7 @@ app.post('/resetPassword3/',(req,res,next)=>{
 		}
 		});
 })
-
-
+//-----------------------------------------------------------------------------------------------
 
 /*get patient user detail*/
 app.post('/getDetailsPatient/',(req,res,next)=>{
@@ -844,7 +718,6 @@ app.post('/getDetailsPatient/',(req,res,next)=>{
 					res.json(jsonArray);
 				} else{
 					res.json([{success:'-1'}]);
-					console.log(error);
 				}
 			}
 		})
@@ -905,8 +778,6 @@ app.post('/getDetailsSpecialist/',(req,res,next)=>{
 			}
 		})
 })
-
-
 
 /* Update Patient Detail Acticity*/
 app.post('/updateDetailsPatient/',(req,res,next)=>{
@@ -971,9 +842,6 @@ app.post('/updateDetailsSpecialist/',(req,res,next)=>{
  	});
 })
 
-
-
-
 /* Emotion Activity*/
 //submit emotion
 app.post('/emotion/',(req,res,next)=>{
@@ -989,19 +857,8 @@ app.post('/emotion/',(req,res,next)=>{
 	con.query('INSERT INTO useremotiondata (nric, type, date, expression,analysis) VALUES (?,?,?,?,?)'
 		,[email,type,date,expression,output],
 		function(err,result,fields){
-			console.log('debug ' + email)
-			console.log('debug ' + type)
-			console.log('debug ' + date)
-			console.log('debug ' + expression)
-			console.log('debug ' + output)
 				if(err){
-					console.log('err' + err)
-					console.log('result' + result)
-					console.log('fields' + fields)
-					console.log('success: 0');
-					console.trace('fatal error: ' + err.message)
 					res.json([{success:'0'}]);
-					// throw err;	
 				}
 				else{
 					console.log('success');
@@ -1035,14 +892,13 @@ app.post('/getEmotion/',(req,res,next)=>{
 			}
 		})
 })
+
 //update emotion
 app.post('/updateEmotion/',(req,res,next)=>{
 	var post_data = req.body;
 
 	var id = post_data.id;
 	var analysis = post_data.analysis;
-	// var id = '1';
-	// var analysis = 'Positive';
 
 	con.query('UPDATE useremotiondata SET analysis=? WHERE id=?',
 		[analysis,id], 
@@ -1056,53 +912,12 @@ app.post('/updateEmotion/',(req,res,next)=>{
 		});
 })
 
-
-
-
-
-
-/* Event Assessment Activity*/
-app.post('/eAssessment/',(req,res,next)=>{
-	var post_data = req.body; //get POST params
-
-	var email = post_data.email;
-	var type = post_data.type;
-	var q1 = post_data.q1;
-	var q2 = post_data.q2;
-	var q3 = post_data.q3;
-	var q4 = post_data.q4;
-	var q5 = post_data.q5;
-	var q6 = post_data.q6;
-	var q7 = post_data.q7;
-	var q8 = post_data.q8;
-	var eventName = post_data.eventName;
-	
-
-	con.query('INSERT INTO eventassessmenttable (nric, type, q1, q2, q3, q4, q5, q6, q7, q8, event) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
-		,[email,type,q1,q2,q3,q4,q5,q6,q7,q8, eventName],
-		function(err,result,fields){
-				if(err){
-					console.log('success: 0');
-					res.json([{success:'0'}]);
-					// throw err;	
-				}
-				else{
-					console.log('success');
-					res.json([{success:'1'}]);	
-				} 	
-	});
-})
-
-
-
-
 /* Appointment Scheduling Activity */
 //get Appointment 
 app.post('/getAppointment/',(req,res,next)=>{
 	var post_data = req.body; //get POST params
 
 	var email = post_data.email;
-	// var email ='l@gmail.com';
 	var jsonArray =[];
 	
 
@@ -1188,64 +1003,58 @@ app.post('/updateAppointment/',(req,res,next)=>{
 		});
 })
 
-
 /* Get User Photo*/
 //get Patient photo
 app.post('/getPatientPic/',(req,res,next)=>{
 	var post_data = req.body; //get POST params
 
 	var email = post_data.email;
-	// var email ='l@gmail.com';
 	var jsonArray =[];
 	
-
 	con.query('SELECT * FROM usertable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
-			console.log('mysql error',err);
-			res.json([{success:'0'}]);
-		});
-		if(result && result.length)	{
-			for (var i = 0; i < result.length; i++) {
-				jsonArray.push({
-					success: '1', 
-					photo: result[i].photo});
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						photo: result[i].photo});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
 			}
-			res.json(jsonArray);
-		} else{
-			res.json([{success:'-1'}]);
-		}
-	});
+		});
 })
 
 //get Caregiver photo
 app.post('/getCaregiverPic/',(req,res,next)=>{
-	var post_data = req.body; //get POST params
+	var post_data = req.body; 
 
 	var email = post_data.email;
-	// var email ='l@gmail.com';
 	var jsonArray =[];
 	
-
 	con.query('SELECT * FROM caregivertable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
-			console.log('mysql error',err);
-			res.json([{success:'0'}]);
-		});
-		if(result && result.length)	{
-			for (var i = 0; i < result.length; i++) {
-				jsonArray.push({
-					success: '1', 
-					photo: result[i].photo});
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						photo: result[i].photo});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
 			}
-			res.json(jsonArray);
-		} else{
-			res.json([{success:'-1'}]);
-		}
-	});
+		});
 })
 
 //get Specialist photo
@@ -1253,67 +1062,30 @@ app.post('/getSpecialistPic/',(req,res,next)=>{
 	var post_data = req.body; //get POST params
 
 	var email = post_data.email;
-	// var email ='l@gmail.com';
 	var jsonArray =[];
 	
-
 	con.query('SELECT * FROM specialisttable WHERE nric=?'
 		,[email],
 		function(err,result,fields){
 			con.on('error',function(err){
-			console.log('mysql error',err);
-			res.json([{success:'0'}]);
-		});
-		if(result && result.length)	{
-			for (var i = 0; i < result.length; i++) {
-				jsonArray.push({
-					success: '1', 
-					photo: result[i].photo});
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						photo: result[i].photo});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
 			}
-			res.json(jsonArray);
-		} else{
-			res.json([{success:'-1'}]);
-		}
-	});
+		});
 })
-
-
-
 
 /*Forum Activity*/
 //get forum posts
-// app.post('/getForumPost/',(req,res,next)=>{
-// 	var jsonArray=[];
-// 	var parentID = '';
-// 	con.query('SELECT * FROM forumdata WHERE parentID=? ORDER BY id DESC LIMIT 30',
-// 		[parentID],
-// 		function(err,result,fields){
-// 			con.on('error',function(err){
-// 			console.log('mysql error',err);
-// 			res.json([{success:'0'}]);
-// 		});
-// 		if(result && result.length)	{
-// 			for (var i = 0; i < result.length; i++) {
-// 				jsonArray.push({
-// 					success: '1', 
-// 					email: result[i].email,
-// 					name: result[i].name, 
-// 					type: result[i].type,
-// 					title: result[i].title,
-// 					content: result[i].content,
-// 					anonymous: result[i].anonymous,
-// 					pinned: result[i].pinned,
-// 					date: result[i].date,
-// 					id: result[i].id});
-
-// 			}
-// 			res.json(jsonArray);
-// 		} else{
-// 			res.json([{success:'-1'}]);
-// 		}
-// 	});
-// })
-
 app.post('/getForumPost/',(req,res,next)=>{
 	var jsonArray=[];
 	var parentID='';
@@ -1343,12 +1115,9 @@ app.post('/getForumPost/',(req,res,next)=>{
 					date: result[i].date,
 					photo: result[i].photo,
 					id: result[i].id});
-
 			}
 			res.json(jsonArray);
-			console.log(jsonArray);
 		} else{
-			console.log(err);
 			res.json([{success:'-1'}]);
 		}
 	});
@@ -1379,7 +1148,6 @@ app.post('/postingToForum/',(req,res,next)=>{
 			}
 		})
 })
-
 
 //reply to post
 app.post('/postReply/',(req,res,next)=>{
@@ -1435,7 +1203,6 @@ app.post('/getReplyPost/',(req,res,next)=>{
 		}
 	});
 })
-
 
 //get my posts
 app.post('/getMyPost/',(req,res,next)=>{
@@ -1528,7 +1295,6 @@ app.post('/searchPost/',(req,res,next)=>{
 	var post_data = req.body;
 	var search = post_data.search;
 	var jsonArray = []; 
-	// var search = 'good';
 
 	con.query('SELECT * FROM forumdata WHERE content LIKE ? OR title LIKE ?',
 		['%'+search+'%', '%'+search+'%'], function(error,result,fields){
@@ -1720,7 +1486,6 @@ app.post('/getPost/',(req,res,next)=>{
 	});
 })
 
-
 /*Caregiver Forum Activity*/
 //get forum posts
 app.post('/getCaregiverForumPost/',(req,res,next)=>{
@@ -1785,7 +1550,6 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 		})
 })
 
-
 //reply to post
 app.post('/postReplyCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
@@ -1840,7 +1604,6 @@ app.post('/getReplyPostCaregiver/',(req,res,next)=>{
 		}
 	});
 })
-
 
 //get my posts
 app.post('/getMyPostCaregiver/',(req,res,next)=>{
@@ -2040,8 +1803,6 @@ app.post('/getPostCaregiver/',(req,res,next)=>{
 	});
 })
 
-
-
 //add to favourite list
 app.post('/addToFavouriteCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
@@ -2127,6 +1888,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 	});
 })
 
+/* Exercise Activity*/
 //get exercise
 app.post('/getExercise/',(req,res,next)=>{
 	var post_data = req.body;
@@ -2267,8 +2029,8 @@ app.post('/deleteExercise/',(req,res,next)=>{
 		});
 })
 
+/* Questionnaire Activity*/
 //post questionnaire
-// date, id, email, period, ques 1-8 
 app.post('/postQuestionnaire/',(req,res,next)=>{
 	var post_data = req.body; //get POST params
 
@@ -2283,7 +2045,6 @@ app.post('/postQuestionnaire/',(req,res,next)=>{
 				if(err){
 					console.log('success: 0');
 					res.json([{success:'0'}]);
-					// throw err;	
 				}
 				else{
 					console.log('success');
@@ -2293,7 +2054,6 @@ app.post('/postQuestionnaire/',(req,res,next)=>{
 })
 
 //get questionnaire 
-// date, id, email, period, ques 1-8 
 app.post('/getQuestionnaire/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
@@ -2339,6 +2099,7 @@ app.post('/deleteQuestionnaire/',(req,res,next)=>{
 		});
 })
 
+/*Chat Activity*/
 //add chat channel id
 app.post('/postChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
@@ -2363,6 +2124,7 @@ app.post('/postChatChannel/',(req,res,next)=>{
 		})
 })
 
+//get chat channel detail by nricfrom
 app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
 	let NRICFrom = post_data.NRICFrom;
@@ -2395,150 +2157,7 @@ app.post('/getChatChannel/',(req,res,next)=>{
 	);
 })
 
-app.post('/getAllPatient/',(req,res,next)=>{
-	let post_data = req.body;
-	var jsonArray=[];
-
-	con.query('SELECT * FROM usertable',
-		"",
-		function(err,result,fields){
-			con.on('error',function(err){
-				console.log('mysql error',err);
-				res.json([{success:'0'}]);
-			});
-			if(result && result.length)	{
-				for (var i = 0; i < result.length; i++) {
-					jsonArray.push({
-						success: '1', 
-						id: result[i].id ? result[i].id : 'null',
-						name: result[i].name ? result[i].name : 'null',
-						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].NRIC ? result[i].NRIC : 'null',
-						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null',
-						photo: result[i].photo ? result[i].photo : 'null'
-					});
-				}
-				res.json(jsonArray);
-			} else{
-				res.json([{success:'-1'}]);
-			}
-		}
-	);
-})
-
-app.post('/getAllCaregiver/',(req,res,next)=>{
-	let post_data = req.body;
-	var jsonArray=[];
-
-	con.query('SELECT * FROM caregivertable',
-		"",
-		function(err,result,fields){
-			con.on('error',function(err){
-				console.log('mysql error',err);
-				res.json([{success:'0'}]);
-			});
-			if(result && result.length)	{
-				for (var i = 0; i < result.length; i++) {
-					jsonArray.push({
-						success: '1', 
-						id: result[i].id ? result[i].id : 'null',
-						name: result[i].name ? result[i].name : 'null',
-						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].NRIC ? result[i].NRIC : 'null',
-						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null',
-						photo: result[i].photo ? result[i].photo : 'null'
-					});
-				}
-				res.json(jsonArray);
-			} else{
-				res.json([{success:'-1'}]);
-			}
-		}
-	);
-})
-
-app.post('/getAllSpecialist/',(req,res,next)=>{
-	let post_data = req.body;
-	var jsonArray=[];
-
-	con.query('SELECT * FROM specialisttable',
-		"",
-		function(err,result,fields){
-			con.on('error',function(err){
-				console.log('mysql error',err);
-				res.json([{success:'0'}]);
-			});
-			if(result && result.length)	{
-				for (var i = 0; i < result.length; i++) {
-					jsonArray.push({
-						success: '1', 
-						id: result[i].id ? result[i].id : 'null',
-						name: result[i].name ? result[i].name : 'null',
-						email: result[i].email ? result[i].email : 'null',
-						nric: result[i].NRIC ? result[i].NRIC : 'null',
-						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
-						age: result[i].age ? result[i].age : 'null',
-						photo: result[i].photo ? result[i].photo : 'null'
-					});
-				}
-				res.json(jsonArray);
-			} else{
-				res.json([{success:'-1'}]);
-			}
-		}
-	);
-})
-
-app.post('/deletePatient/',(req,res,next)=>{
-	var post_data = req.body;
-
-	var id = post_data.id;
-
-	con.query('DELETE FROM usertable WHERE id=?',
-		[id], function(err, result, fields){
-			if(err){
-				res.json({success: '0'});
-			}
-			else{
-				res.json({success: '1'});
-			}
-		});
-})
-
-app.post('/deleteCaregiver/',(req,res,next)=>{
-	var post_data = req.body;
-
-	var id = post_data.id;
-
-	con.query('DELETE FROM caregivertable WHERE id=?',
-		[id], function(err, result, fields){
-			if(err){
-				res.json({success: '0'});
-			}
-			else{
-				res.json({success: '1'});
-			}
-		});
-})
-
-app.post('/deleteSpecialist/',(req,res,next)=>{
-	var post_data = req.body;
-
-	var id = post_data.id;
-
-	con.query('DELETE FROM specialisttable WHERE id=?',
-		[id], function(err, result, fields){
-			if(err){
-				res.json({success: '0'});
-			}
-			else{
-				res.json({success: '1'});
-			}
-		});
-})
-
+//get chat channel detail by chatchannelid
 app.post('/getChatByChatChannelId',(req,res,next) => {
 	let post_data = req.body;
 	let chatChannelId = post_data.chatChannelId;
@@ -2571,6 +2190,7 @@ app.post('/getChatByChatChannelId',(req,res,next) => {
 	);
 })
 
+//get chatchannelid if nricto && nricfrom exist
 app.post('/getChatIfExist',(req,res,next) => {
 	let post_data = req.body;
 	let NRICFrom = post_data.NRICFrom;
@@ -2597,6 +2217,154 @@ app.post('/getChatIfExist',(req,res,next) => {
 			}
 		}
 	);
+})
+
+/* Admin related */
+//get all patients
+app.post('/getAllPatient/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM usertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+//get all caregiver
+app.post('/getAllCaregiver/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM caregivertable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+//get all specialist
+app.post('/getAllSpecialist/',(req,res,next)=>{
+	let post_data = req.body;
+	var jsonArray=[];
+
+	con.query('SELECT * FROM specialisttable',
+		"",
+		function(err,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json([{success:'0'}]);
+			});
+			if(result && result.length)	{
+				for (var i = 0; i < result.length; i++) {
+					jsonArray.push({
+						success: '1', 
+						id: result[i].id ? result[i].id : 'null',
+						name: result[i].name ? result[i].name : 'null',
+						email: result[i].email ? result[i].email : 'null',
+						nric: result[i].NRIC ? result[i].NRIC : 'null',
+						contactNo: result[i].contactNo ? result[i].contactNo : 'null',
+						age: result[i].age ? result[i].age : 'null',
+						photo: result[i].photo ? result[i].photo : 'null'
+					});
+				}
+				res.json(jsonArray);
+			} else{
+				res.json([{success:'-1'}]);
+			}
+		}
+	);
+})
+
+//delete patient by id
+app.post('/deletePatient/',(req,res,next)=>{
+	var post_data = req.body;
+	var id = post_data.id;
+
+	con.query('DELETE FROM usertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+//delete caregiver by id
+app.post('/deleteCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+	var id = post_data.id;
+
+	con.query('DELETE FROM caregivertable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
+})
+
+//delete specialist by id
+app.post('/deleteSpecialist/',(req,res,next)=>{
+	var post_data = req.body;
+	var id = post_data.id;
+
+	con.query('DELETE FROM specialisttable WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json({success: '0'});
+			}
+			else{
+				res.json({success: '1'});
+			}
+		});
 })
 
 //start server
