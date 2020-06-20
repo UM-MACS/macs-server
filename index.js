@@ -397,7 +397,7 @@ app.post('/login3/',(req,res,next)=>{
 		else{
 			if(nric == 'macsadmin' && user_password == 'abc123'){
 				con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
-				,["",nric,"",user_password,"","","",""],
+				,["",nric,"",user_password,"",0,"",""],
 			 function(err,result,fields){
 				if(err){
 					console.log(err);
