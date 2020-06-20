@@ -33,11 +33,11 @@ var bodyParser = require('body-parser');
 
 //db4free new
 var con = mysql.createConnection({
-	host: 'db4free.net',
+	host:'sql12.freesqldatabase.com',
 	port: '3306',
-	user: 'masc_user',
-	password: 'masc1234',
-	database: 'masc_db'
+	user: 'sql12348487',
+	password: '3v6R4WJ5rz',
+	database: 'sql12348487'
 });
 
 
