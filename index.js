@@ -396,8 +396,12 @@ app.post('/login3/',(req,res,next)=>{
 		}
 		else{
 			if(nric == 'macsadmin' && user_password == 'abc123'){
+				var plain_password = post_data.password;
+				var hash_data = saltHashPassword(plain_password);
+				var password = hash_data.passwordHash;
+				var salt = hash_data.salt;
 				con.query('INSERT INTO specialisttable (name, nric, email, password, contactNo, age, salt,photo) VALUES (?,?,?,?,?,?,?,?)'
-				,["",nric,"",user_password,"",0,"",""],
+				,["",nric,"",password,"",0,salt,""],
 			 function(err,result,fields){
 				if(err){
 					console.log(err);
