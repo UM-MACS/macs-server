@@ -410,7 +410,7 @@ app.post('/login3/',(req,res,next)=>{
 				}
 				else{
 					console.log('success');
-					res.json([{success:'1',name: admin, nric: nric}]); //return all 
+					res.json([{success:'1',name: "admin", nric: nric}]); //return all 
 				} 
 				});
 			} else{
