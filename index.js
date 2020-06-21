@@ -13,23 +13,23 @@ var bodyParser = require('body-parser');
 // 	database: 'masoccdata'
 // });
 
-//freesqldatabase new db
-// var con = mysql.createConnection({
-// 	host:'sql12.freesqldatabase.com',
-// 	port: '3306',
-// 	user: 'sql12348487',
-// 	password: '3v6R4WJ5rz',
-// 	database: 'sql12348487'
-// });
+freesqldatabase new db
+var con = mysql.createConnection({
+	host:'sql12.freesqldatabase.com',
+	port: '3306',
+	user: 'sql12348487',
+	password: '3v6R4WJ5rz',
+	database: 'sql12348487'
+});
 
 //db4free test db
-var con = mysql.createConnection({
-	host: 'db4free.net',
-	port: '3306',
-	user: 'masc_user',
-	password: 'masc1234',
-	database: 'masc_db'
-});
+// var con = mysql.createConnection({
+// 	host: 'db4free.net',
+// 	port: '3306',
+// 	user: 'masc_user',
+// 	password: 'masc1234',
+// 	database: 'masc_db'
+// });
 
 var app = express();
 app.use(bodyParser.json({limit: '50mb',extended: true}));
