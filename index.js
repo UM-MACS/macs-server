@@ -602,13 +602,13 @@ app.post('/resetPasswordPatient/',(req,res,next)=>{
 	var newPass = hash_data.passwordHash;
 	var newSalt = hash_data.salt;
 	
-		con.query('SELECT * FROM usertable WHERE email=? ',[email],
+		con.query('SELECT * FROM usertable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
 			});
 		if(result && result.length){
-				con.query('UPDATE usertable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE usertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
@@ -634,13 +634,13 @@ app.post('/resetPassword2/',(req,res,next)=>{
 	var newSalt = hash_data.salt;
 	
 	
-		con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
+		con.query('SELECT * FROM caregivertable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
 			});
 		if(result && result.length){
-				con.query('UPDATE caregivertable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE caregivertable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
@@ -666,13 +666,13 @@ app.post('/resetPassword3/',(req,res,next)=>{
 	var newPass = hash_data.passwordHash;
 	var newSalt = hash_data.salt;
 	
-		con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
+		con.query('SELECT * FROM specialisttable WHERE nric=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
 				console.log('mysql error',err);
 			});
 		if(result && result.length){
-				con.query('UPDATE specialisttable SET password=?, salt=? WHERE email =?',
+				con.query('UPDATE specialisttable SET password=?, salt=? WHERE nric =?',
 				 [newPass,newSalt,email], function(error,result,fields){
 				 	if(error){
 				 		//fail to update
