@@ -36,7 +36,7 @@ app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 
 //password ultil
-var genRandomString = function(length){
+var genRandomString = function(length){c 
 	return crypto.randomBytes(Math.ceil(length/2))
 		.toString('hex') //convert to hex format
 		.slice(0,length);
@@ -423,10 +423,7 @@ app.post('/changePassword/',(req,res,next)=>{
 app.post('/sendSaltToEmail/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
-	// var email = 'o@gmail.com';
-	// var tempPass = "shkjsdfhuifhddk"
 	var tempPass;
-
 
 	con.query('SELECT * FROM usertable WHERE email=? ',[email],
 		function(error,result,fields){
@@ -444,7 +441,6 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 			//wrong email
 			res.json([{success: '-1'}]);
 			console.log("Email not Found");
-
 		}
 		});
 
@@ -454,19 +450,19 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 		var transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth:{
-			user: 'masocc.noreply@gmail.com',
-			pass: 'masoccfyp'
+			user: 'macs.noreply@gmail.com',
+			pass: 'macs1234'
 		}
 	});
 
 	var mailOptions = {
-		from: 'masocc.noreply@gmail.com',
+		from: 'macs.noreply@gmail.com',
 		to: email,
-		subject: 'Reset Your Password of MASOCC Account',
+		subject: 'Reset Your Password of MACS Account',
 		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
 		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
 		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
-		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MASOCC Team</i></h4></font>'
+		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
 	};
 
 	transporter.sendMail(mailOptions,function(error,info){
@@ -483,8 +479,6 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 app.post('/sendSaltToEmail2/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
-	// var email = 'o@gmail.com';
-	// var tempPass = "shkjsdfhuifhddk"
 	var tempPass;
 
 
@@ -508,26 +502,26 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 		}
 		});
 
-	function sendEmail(tempPass, email){
-		console.log('temporary password is '+ tempPass);
-		var nodemailer = require('nodemailer');
-		var transporter = nodemailer.createTransport({
-		service: 'gmail',
-		auth:{
-			user: 'masocc.noreply@gmail.com',
-			pass: 'masoccfyp'
-		}
-	});
-
-	var mailOptions = {
-		from: 'masocc.noreply@gmail.com',
-		to: email,
-		subject: 'Reset Your Password of MASOCC Account',
-		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
-		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
-		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
-		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MASOCC Team</i></h4></font>'
-	};
+		function sendEmail(tempPass, email){
+			console.log('temporary password is '+ tempPass);
+			var nodemailer = require('nodemailer');
+			var transporter = nodemailer.createTransport({
+			service: 'gmail',
+			auth:{
+				user: 'macs.noreply@gmail.com',
+				pass: 'macs1234'
+			}
+		});
+	
+		var mailOptions = {
+			from: 'macs.noreply@gmail.com',
+			to: email,
+			subject: 'Reset Your Password of MACS Account',
+			html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
+			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
+		};
 
 	transporter.sendMail(mailOptions,function(error,info){
 		if(error){
@@ -543,8 +537,6 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 app.post('/sendSaltToEmail3/',(req,res,next)=>{
 	var post_data = req.body;
 	var email = post_data.email;
-	// var email = 'o@gmail.com';
-	// var tempPass = "shkjsdfhuifhddk"
 	var tempPass;
 
 
@@ -568,26 +560,26 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 		}
 		});
 
-	function sendEmail(tempPass, email){
-		console.log('temporary password is '+ tempPass);
-		var nodemailer = require('nodemailer');
-		var transporter = nodemailer.createTransport({
-		service: 'gmail',
-		auth:{
-			user: 'masocc.noreply@gmail.com',
-			pass: 'masoccfyp'
-		}
-	});
-
-	var mailOptions = {
-		from: 'masocc.noreply@gmail.com',
-		to: email,
-		subject: 'Reset Your Password of MASOCC Account',
-		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
-		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
-		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
-		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MASOCC Team</i></h4></font>'
-	};
+		function sendEmail(tempPass, email){
+			console.log('temporary password is '+ tempPass);
+			var nodemailer = require('nodemailer');
+			var transporter = nodemailer.createTransport({
+			service: 'gmail',
+			auth:{
+				user: 'macs.noreply@gmail.com',
+				pass: 'macs1234'
+			}
+		});
+	
+		var mailOptions = {
+			from: 'macs.noreply@gmail.com',
+			to: email,
+			subject: 'Reset Your Password of MACS Account',
+			html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
+			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
+		};
 
 	transporter.sendMail(mailOptions,function(error,info){
 		if(error){
