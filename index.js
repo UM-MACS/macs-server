@@ -459,7 +459,7 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 		from: 'macs.noreply@gmail.com',
 		to: email,
 		subject: 'Reset Your Password of MACS Account',
-		html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+		html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
 		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
 		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
@@ -517,7 +517,7 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 			from: 'macs.noreply@gmail.com',
 			to: email,
 			subject: 'Reset Your Password of MACS Account',
-			html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+			html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
 			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
 			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
@@ -575,7 +575,7 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 			from: 'macs.noreply@gmail.com',
 			to: email,
 			subject: 'Reset Your Password of MACS Account',
-			html: '<br><img src="https://fontmeme.com/permalink/191129/1d5a554c0bf94354d7c10c92bae194b7.png"><br><font color="#383838">'+
+			html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
 			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
 			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
