@@ -422,9 +422,12 @@ app.post('/changePassword/',(req,res,next)=>{
 /* Reset Password Activity*/
 app.post('/sendSaltToEmail/',(req,res,next)=>{
 	var post_data = req.body;
-	var email = post_data.email;
+	var email = post_data.email ? post_data.email : '';
+	var nric = post_data.nric ? post_data.nric : '';
 	var tempPass;
+	var contact = '';
 
+	if(email){
 	con.query('SELECT * FROM usertable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
@@ -443,6 +446,29 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 			console.log("Email not Found");
 		}
 		});
+	}
+	else{
+		con.query('SELECT * FROM usertable WHERE nric=? ',[nric],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			tempPass = result[0].salt;
+			contact = 'User\'s Contact Number is ' + result[0].contactNo;
+			email = 'macs.noreply@gmail.com'
+			sendEmail(tempPass,email);
+			res.json([{success: '1'}]);
+
+		}
+		else{
+			//wrong email
+			res.json([{success: '-1'}]);
+			console.log("Email not Found");
+		}
+		});
+	}
 
 	function sendEmail(tempPass, email){
 		console.log('temporary password is '+ tempPass);
@@ -460,7 +486,7 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 		to: email,
 		subject: 'Reset Your Password of MACS Account',
 		html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
-		'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+		'<h1>Greetings, '+ contact +'</h1><h2>Please log in using your temporary password: <i><b> '
 		+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 		' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
 	};
@@ -478,10 +504,12 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 /*Reset Password for caregiver*/
 app.post('/sendSaltToEmail2/',(req,res,next)=>{
 	var post_data = req.body;
-	var email = post_data.email;
+	var email = post_data.email ? post_data.email : '';
+	var nric = post_data.nric ? post_data.nric : '';
 	var tempPass;
+	var contact = '';
 
-
+	if(email){
 	con.query('SELECT * FROM caregivertable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
@@ -501,6 +529,30 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 
 		}
 		});
+	}
+	else{
+		con.query('SELECT * FROM caregivertable WHERE nric=? ',[nric],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			tempPass = result[0].salt;
+			contact = 'User\'s Contact Number is ' + result[0].contactNo;
+			email = 'macs.noreply@gmail.com'
+			sendEmail(tempPass,email);
+			res.json([{success: '1'}]);
+
+		}
+		else{
+			//wrong email
+			res.json([{success: '-1'}]);
+			console.log("Email not Found");
+
+		}
+		});
+	}
 
 		function sendEmail(tempPass, email){
 			console.log('temporary password is '+ tempPass);
@@ -518,7 +570,7 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 			to: email,
 			subject: 'Reset Your Password of MACS Account',
 			html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
-			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+			'<h1>Greetings, '+ contact +'</h1><h2>Please log in using your temporary password: <i><b> '
 			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
 		};
@@ -536,10 +588,12 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 /*Reset Password for specialist*/
 app.post('/sendSaltToEmail3/',(req,res,next)=>{
 	var post_data = req.body;
-	var email = post_data.email;
+	var email = post_data.email ? post_data.email : '';
+	var nric = post_data.nric ? post_data.nric : '';
 	var tempPass;
+	var contact = '';
 
-
+	if(email){
 	con.query('SELECT * FROM specialisttable WHERE email=? ',[email],
 		function(error,result,fields){
 			con.on('error',function(err){
@@ -559,6 +613,30 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 
 		}
 		});
+	}
+	else{
+		con.query('SELECT * FROM specialisttable WHERE nric=? ',[nric],
+		function(error,result,fields){
+			con.on('error',function(err){
+				console.log('mysql error',err);
+				res.json('error',err);
+			});
+		if(result && result.length){
+			tempPass = result[0].salt;
+			contact = 'User\'s Contact Number is ' + result[0].contactNo;
+			email = 'macs.noreply@gmail.com'
+			sendEmail(tempPass,email);
+			res.json([{success: '1'}]);
+
+		}
+		else{
+			//wrong email
+			res.json([{success: '-1'}]);
+			console.log("Email not Found");
+
+		}
+		});
+	}
 
 		function sendEmail(tempPass, email){
 			console.log('temporary password is '+ tempPass);
@@ -576,7 +654,7 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 			to: email,
 			subject: 'Reset Your Password of MACS Account',
 			html: '<br><img src="https://fontmeme.com/permalink/200621/3300a0a8193fc5c66ec670ecd3b3fd56.png"><br><font color="#383838">'+
-			'<h1>Greetings,</h1><h2>Please log in using your temporary password: <i><b> '
+			'<h1>Greetings, '+ contact +'</h1><h2>Please log in using your temporary password: <i><b> '
 			+tempPass+'</i></b><br/> to reset your password.</h2><br><h3>If you did not perform this action,'+
 			' please ignore this email.</h3><br><h4>With Kind Regards,<br/><br/><i>MACS Team</i></h4></font>'
 		};
