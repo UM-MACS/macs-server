@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 // 	database: 'masoccdata'
 // });
 
-freesqldatabase new db
+/* freesqldatabase new db */
 var con = mysql.createConnection({
 	host:'sql12.freesqldatabase.com',
 	port: '3306',
@@ -22,7 +22,7 @@ var con = mysql.createConnection({
 	database: 'sql12348487'
 });
 
-//db4free test db
+/* db4free test db */
 // var con = mysql.createConnection({
 // 	host: 'db4free.net',
 // 	port: '3306',
