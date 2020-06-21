@@ -36,7 +36,7 @@ app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 
 //password ultil
-var genRandomString = function(length){c 
+var genRandomString = function(length){
 	return crypto.randomBytes(Math.ceil(length/2))
 		.toString('hex') //convert to hex format
 		.slice(0,length);
