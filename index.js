@@ -783,6 +783,7 @@ app.post('/getDetailsPatient/',(req,res,next)=>{
 							name: result[i].name,
 							email: result[i].email,
 							age: result[i].age,
+							photo: result[i].photo,
 							phoneNo: result[i].contactNo});
 					}
 					res.json(jsonArray);
@@ -811,6 +812,7 @@ app.post('/getDetailsCaregiver/',(req,res,next)=>{
 							name: result[i].name,
 							email: result[i].email,
 							age: result[i].age,
+							photo: result[i].photo,
 							phoneNo: result[i].contactNo});
 					}
 					res.json(jsonArray);
@@ -839,6 +841,7 @@ app.post('/getDetailsSpecialist/',(req,res,next)=>{
 							name: result[i].name,
 							email: result[i].email,
 							age: result[i].age,
+							photo: result[i].photo,
 							phoneNo: result[i].contactNo});
 					}
 					res.json(jsonArray);
@@ -857,9 +860,10 @@ app.post('/updateDetailsPatient/',(req,res,next)=>{
 	var name = post_data.name;
 	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
+	var photo = post_data.photo;
 	
-	con.query('UPDATE usertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
-		 [email,name,phoneNo,age,nric], function(error,result,fields){
+	con.query('UPDATE usertable SET email=?, name=?, contactNo=?, age=?, photo=? WHERE nric =?',
+		 [email,name,phoneNo,age,photo,nric], function(error,result,fields){
 		 	if(error){
 		 		//fail to update
 		 		res.json({success: '0'});
@@ -878,9 +882,11 @@ app.post('/updateDetailsCaregiver/',(req,res,next)=>{
 	var name = post_data.name;
 	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
+	var photo = post_data.photo;
+
 	
-	con.query('UPDATE caregivertable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
-		 [email,name,phoneNo,age,nric], function(error,result,fields){
+	con.query('UPDATE caregivertable SET email=?, name=?, contactNo=?, age=?, photo=? WHERE nric =?',
+		 [email,name,phoneNo,age,photo,nric], function(error,result,fields){
 		 	if(error){
 		 		//fail to update
 		 		res.json({success: '0'});
@@ -899,9 +905,10 @@ app.post('/updateDetailsSpecialist/',(req,res,next)=>{
 	var name = post_data.name;
 	var phoneNo = post_data.contactNo;
 	var age = post_data.age;
+	var photo = post_data.photo;
 	
-	con.query('UPDATE specialisttable SET email=?, name=?, contactNo=?, age=? WHERE nric =?',
-		 [email,name,phoneNo,age,nric], function(error,result,fields){
+	con.query('UPDATE specialisttable SET email=?, name=?, contactNo=?, age=?, photo=? WHERE nric =?',
+		 [email,name,phoneNo,age,photo,nric], function(error,result,fields){
 		 	if(error){
 		 		//fail to update
 		 		res.json({success: '0'});
