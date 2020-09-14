@@ -923,6 +923,7 @@ app.post('/updateDetailsSpecialist/',(req,res,next)=>{
 //submit emotion
 app.post('/emotion/',(req,res,next)=>{
 	var post_data = req.body; //get POST params
+	console.log(post_data)
 
 	var email = post_data.email;
 	var type = post_data.type;
