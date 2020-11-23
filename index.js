@@ -477,7 +477,7 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 		service: 'gmail',
 		auth:{
 			user: 'macs.noreply@gmail.com',
-			pass: 'macs1234'
+			pass: 'Macs@1234'
 		}
 	});
 
