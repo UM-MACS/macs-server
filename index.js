@@ -561,7 +561,7 @@ app.post('/sendSaltToEmail2/',(req,res,next)=>{
 			service: 'gmail',
 			auth:{
 				user: 'macs.noreply@gmail.com',
-				pass: 'macs1234'
+				pass: 'Macs@1234'
 			}
 		});
 	
@@ -645,7 +645,7 @@ app.post('/sendSaltToEmail3/',(req,res,next)=>{
 			service: 'gmail',
 			auth:{
 				user: 'macs.noreply@gmail.com',
-				pass: 'macs1234'
+				pass: 'Macs@1234'
 			}
 		});
 	
