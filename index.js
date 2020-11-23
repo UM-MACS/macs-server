@@ -1921,7 +1921,7 @@ app.post('/getIsFavouriteCaregiver/',(req,res,next)=>{
 	var email = post_data.email;
 	var postID = post_data.postID; 
 
-	con.query('SELECT * FROM favouritelistcaregiver WHERE email=? AND postID=?',
+	con.query('SELECT * FROM favouritelistcaregiver WHERE nric=? AND postID=?',
 		[email,postID], function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
