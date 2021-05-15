@@ -1313,6 +1313,7 @@ app.post('/getMyPost/',(req,res,next)=>{
 			res.json([{success:'-1'}]);
 		}
 	});
+	console.log(jsonArray)
 })
 
 //update posts
