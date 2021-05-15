@@ -1308,12 +1308,12 @@ app.post('/getMyPost/',(req,res,next)=>{
 					anonymous: result[i].anonymous,
 					id: result[i].id});
 			}
+			console.log(jsonArray)
 			res.json(jsonArray);
 		} else{
 			res.json([{success:'-1'}]);
 		}
 	});
-	console.log(jsonArray)
 })
 
 //update posts
