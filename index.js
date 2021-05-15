@@ -19,7 +19,8 @@ var con = mysql.createConnection({
 	port: '3306',
 	user: 'sql12348487',
 	password: '3v6R4WJ5rz',
-	database: 'sql12348487'
+	database: 'sql12348487',
+	charset : 'utf8mb4'
 });
 
 /* db4free test db */
