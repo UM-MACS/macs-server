@@ -1322,6 +1322,7 @@ app.post('/updatePost/',(req,res,next)=>{
 	var id = post_data.id;
 	var title = post_data.title;
 	var content = post_data.content;
+	console.log(content)
 
 	con.query('UPDATE forumdata SET title=?, content=? WHERE id=?',
 		[title,content,id], 
