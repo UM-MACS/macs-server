@@ -1253,6 +1253,44 @@ app.post('/postReply/',(req,res,next)=>{
 		})
 })
 
+//delete reply post
+app.post('/deleteReplyPost/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM forumdata WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json([{success: '0'}]);
+			}
+			else{
+				res.json([{success: '1'}]);
+			}
+		});
+})
+
+//update reply post
+app.post('/updateReplyPost/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+	var content = post_data.content;
+	console.log(content)
+
+	con.query('UPDATE forumdata SET content=? WHERE id=?',
+		[content,id], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			}
+			else{
+				res.json([{success:'1'}]);
+			}
+		});
+})
+
+
 //get reply post
 app.post('/getReplyPost/',(req,res,next)=>{
 	var post_data = req.body;
