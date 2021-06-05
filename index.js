@@ -1245,6 +1245,7 @@ app.post('/postReply/',(req,res,next)=>{
 	con.query('INSERT INTO forumdata (nric,type,name,content,parentID,date,title,anonymous,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
 		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
+			console.log(result.insertId)
 			if(error){
 				res.json([{
 					success:'0',
