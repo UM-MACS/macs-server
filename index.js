@@ -1246,7 +1246,10 @@ app.post('/postReply/',(req,res,next)=>{
 		[email,type,name,content,parentID,date,title,anonymous,pinned,reported], 
 		function(error,result,fields){
 			if(error){
-				res.json([{success:'0'}]);
+				res.json([{
+					success:'0',
+					id: result.insertId
+				}]);
 			} else{
 				res.json([{success:'1'}]);
 			}
