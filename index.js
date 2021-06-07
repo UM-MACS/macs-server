@@ -1189,6 +1189,7 @@ app.post('/getForumPost/',(req,res,next)=>{
 					type: result[i].type,
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
 					date: result[i].date,
@@ -1215,9 +1216,10 @@ app.post('/postingToForum/',(req,res,next)=>{
 	var parentID = '';
 	var pinned = '';
 	var reported = '';
+	var postPhoto = post_data.postPhoto;
 
-	con.query('INSERT INTO forumdata (nric,type,name,title,content,anonymous,date,parentID,pinned,reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
+	con.query('INSERT INTO forumdata (nric,type,name,title,content,anonymous,date,parentID,pinned,reported,postPhoto) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,parentID,pinned,reported,postPhoto], 
 		function(error,result,fields){
 			if(error){
 				console.log(error);
@@ -1345,6 +1347,7 @@ app.post('/getMyPost/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					parentID: result[i].parentID,
 					anonymous: result[i].anonymous,
@@ -1568,6 +1571,7 @@ app.post('/getReportedPost/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
@@ -1598,6 +1602,7 @@ app.post('/getPost/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
