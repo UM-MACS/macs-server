@@ -1701,7 +1701,10 @@ app.post('/postReplyCaregiver/',(req,res,next)=>{
 			if(error){
 				res.json([{success:'0'}]);
 			} else{
-				res.json([{success:'1'}]);
+				res.json([{
+					success:'1',
+					id: result.insertId
+				}]);
 			}
 		})
 })
