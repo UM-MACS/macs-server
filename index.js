@@ -1640,6 +1640,7 @@ app.post('/getCaregiverForumPost/',(req,res,next)=>{
 					type: result[i].type,
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					anonymous: result[i].anonymous,
 					pinned: result[i].pinned,
 					date: result[i].date,
@@ -1664,12 +1665,13 @@ app.post('/postingToCaregiverForum/',(req,res,next)=>{
 	var content = post_data.content;
 	var anonymous = post_data.anonymous;
 	var date = post_data.date;
+	var postPhoto = post_data.postPhoto;
 	var parentID = '';
 	var pinned = '';
 	var reported = '';
 
-	con.query('INSERT INTO caregiverforumdata (nric,type,name,title,content,anonymous,date, parentID, pinned, reported) VALUES (?,?,?,?,?,?,?,?,?,?)',
-		[email,type,name,title,content,anonymous,date,parentID,pinned,reported], 
+	con.query('INSERT INTO caregiverforumdata (nric,type,name,title,content,anonymous,date,postPhoto,parentID, pinned, reported) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+		[email,type,name,title,content,anonymous,date,postPhoto,parentID,pinned,reported], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1734,6 +1736,44 @@ app.post('/getReplyPostCaregiver/',(req,res,next)=>{
 	});
 })
 
+//delete caregiver reply post
+app.post('/deleteReplyPostCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+
+	con.query('DELETE FROM caregiverforumdata WHERE id=?',
+		[id], function(err, result, fields){
+			if(err){
+				res.json([{success: '0'}]);
+			}
+			else{
+				res.json([{success: '1'}]);
+			}
+		});
+})
+
+//update caregiver reply post
+app.post('/updateReplyPostCaregiver/',(req,res,next)=>{
+	var post_data = req.body;
+
+	var id = post_data.id;
+	var content = post_data.content;
+	console.log(content)
+
+	con.query('UPDATE caregiverforumdata SET content=? WHERE id=?',
+		[content,id], 
+		function(error,result,fields){
+			if(error){
+				res.json([{success:'0'}]);
+			}
+			else{
+				res.json([{success:'1'}]);
+			}
+		});
+})
+
+
 //get my posts
 app.post('/getMyPostCaregiver/',(req,res,next)=>{
 	var post_data = req.body;
@@ -1755,6 +1795,7 @@ app.post('/getMyPostCaregiver/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					parentID: result[i].parentID,
 					anonymous: result[i].anonymous,
@@ -1774,9 +1815,10 @@ app.post('/updatePostCaregiver/',(req,res,next)=>{
 	var id = post_data.id;
 	var title = post_data.title;
 	var content = post_data.content;
+	var postPhoto = post_data.postPhoto;
 
-	con.query('UPDATE caregiverforumdata SET title=?, content=? WHERE id=?',
-		[title,content,id], 
+	con.query('UPDATE caregiverforumdata SET title=?, content=?, postPhoto=? WHERE id=?',
+		[title,content,postPhoto,id], 
 		function(error,result,fields){
 			if(error){
 				res.json([{success:'0'}]);
@@ -1841,6 +1883,7 @@ app.post('/searchPostCaregiver/',(req,res,next)=>{
 						name: result[i].name, 
 						title: result[i].title,
 						content: result[i].content,
+						postPhoto: result[i].postPhoto,
 						anonymous: result[i].anonymous,
 						pinned: result[i].pinned,
 						parentID: result[i].parentID,
@@ -1892,6 +1935,7 @@ app.post('/getReportedPostCaregiver/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
@@ -1922,6 +1966,7 @@ app.post('/getPostCaregiver/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
@@ -2007,6 +2052,7 @@ app.post('/myFavouriteListCaregiver/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
