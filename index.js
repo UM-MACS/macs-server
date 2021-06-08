@@ -1524,6 +1524,7 @@ app.post('/myFavouriteList/',(req,res,next)=>{
 					name: result[i].name, 
 					title: result[i].title,
 					content: result[i].content,
+					postPhoto: result[i].postPhoto,
 					date: result[i].date,
 					id: result[i].id});
 			}
