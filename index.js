@@ -1371,7 +1371,7 @@ app.post('/updatePost/',(req,res,next)=>{
 	var postPhoto = post_data.postPhoto;
 	console.log(content)
 
-	con.query('UPDATE forumdata SET title=?, content=?, postPhoto=?, WHERE id=?',
+	con.query('UPDATE forumdata SET title=?, content=?, postPhoto=? WHERE id=?',
 		[title,content,postPhoto,id], 
 		function(error,result,fields){
 			if(error){
