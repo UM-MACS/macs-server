@@ -475,7 +475,7 @@ app.post('/sendSaltToEmail/',(req,res,next)=>{
 		console.log('temporary password is '+ tempPass);
 		var nodemailer = require('nodemailer');
 		var transporter = nodemailer.createTransport({
-		service: 'gmail',
+		service: 'Gmail',
 		auth:{
 			user: 'macs.noreply@gmail.com',
 			pass: 'Macs@1234'
