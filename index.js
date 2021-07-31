@@ -2305,10 +2305,10 @@ app.post('/postChatChannel/',(req,res,next)=>{
 //get chat channel detail by nricfrom
 app.post('/getChatChannel/',(req,res,next)=>{
 	let post_data = req.body;
-	let NRICFrom = post_data.NRICTo;
+	let NRICFrom = post_data.NRICFrom;
 	var jsonArray=[];
 
-	con.query('SELECT * FROM chatchanneltable WHERE NRICTo=?',
+	con.query('SELECT * FROM chatchanneltable WHERE NRICFrom=?',
 		[NRICFrom],
 		function(err,result,fields){
 			con.on('error',function(err){
