@@ -2488,6 +2488,7 @@ app.post('/getAllSpecialist/',(req,res,next)=>{
 						age: result[i].age ? result[i].age : 'null',
 						photo: result[i].photo ? result[i].photo : 'null'
 					});
+					console.log(result[i])
 				}
 				res.json(jsonArray);
 			} else{
